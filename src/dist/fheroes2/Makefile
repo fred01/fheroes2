@@ -42,7 +42,7 @@ $(TARGET): $(notdir $(patsubst %.cpp, %.o, $(SOURCES))) $(DEPLIBS)
 	$(CXX) -o $@ $^ $(LIBS) $(LDFLAGS)
 
 fheroes2.pot: $(SOURCES)
-	xgettext -d fheroes2 -C -F -k_ -k_n:1,2 -o fheroes2.pot $(sort $(SOURCES))
+	xgettext -d fheroes2 -C -F --from-code=UTF-8 -k_ -k_n:1,2 -o fheroes2.pot $(sort $(SOURCES))
 	sed -i~ -e 's/, c-format//' fheroes2.pot
 
 %.o: %.cpp

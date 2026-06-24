@@ -98,6 +98,15 @@ public:
         AMBROSE,
         RUBY,
         MAXIMUS,
+        KEQING,
+        ANNA,
+        ALFONSE,
+        SHARENA,
+        FURINA,
+        XIAO,
+        CLORINDE,
+        SHINJI,
+        CHEVREUSE,
         DIMITRY,
 
         // Barbarian heroes from The Succession Wars.
@@ -109,6 +118,15 @@ public:
         JACLYN,
         ERGON,
         TSABU,
+        NADAKHAN,
+        CLANCEE,
+        MAVUIKA,
+        DOUBLOON,
+        GULCH,
+        MURTESSA,
+        CYNO,
+        CANDACE,
+        IRONBARON,
         ATLAS,
 
         // Sorceress heroes from The Succession Wars.
@@ -120,6 +138,15 @@ public:
         GEM,
         ARIEL,
         CARLAWN,
+        KORRA,
+        TIKI,
+        NAHIDA,
+        AISLING,
+        FOCALORS,
+        YOIMIYA,
+        EI,
+        RAYLA,
+        CITLALI,
         LUNA,
 
         // Warlock heroes from The Succession Wars.
@@ -131,6 +158,15 @@ public:
         KASTORE,
         AGAR,
         FALAGAR,
+        ARLECCHINO,
+        ZUKO,
+        AZULA,
+        OZAI,
+        CLOUSE,
+        LORDVIREN,
+        GARMADON,
+        VERONICA,
+        CLAUDIA,
         WRATHMONT,
 
         // Wizard heroes from The Succession Wars.
@@ -142,6 +178,15 @@ public:
         WILFREY,
         SARAKIN,
         KALINDRA,
+        WU,
+        AETHER,
+        LUMINE,
+        AANG,
+        KIRAN,
+        CALLUM,
+        AARAVOS,
+        ZHONGLI,
+        VENTI,
         MANDIGAL,
 
         // Necromancer heroes from The Succession Wars.
@@ -153,6 +198,15 @@ public:
         RIALDO,
         ROXANA,
         SANDRO,
+        WYPLASH,
+        NUCKAL,
+        KRUNCHA,
+        SAMUKAI,
+        HUTAO,
+        VANGELIS,
+        MORRO,
+        BANSHA,
+        SOULARCHER,
         CELIA,
 
         // The Succession Wars campaign heroes.
@@ -178,7 +232,7 @@ public:
 
         // Debug hero. Should not be used anywhere outside the development!
         DEBUG_HERO,
-
+        
         // Resurrection expansion heroes.
 
         // IMPORTANT! Put all new heroes just above this line.
