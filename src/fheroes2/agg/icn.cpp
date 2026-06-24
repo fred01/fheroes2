@@ -218,7 +218,63 @@ namespace ICN
               { X_LOADCM, "X_LOADCM.ICN" }, { X_CMPBKG, "X_CMPBKG.ICN" }, { X_CMPBTN, "X_CMPBTN.ICN" }, { X_CMPEXT, "X_CMPEXT.ICN" }, { X_TRACK1, "X_TRACK1.ICN" },
               { X_TRACK2, "X_TRACK2.ICN" }, { X_TRACK3, "X_TRACK3.ICN" }, { X_TRACK4, "X_TRACK4.ICN" }, { X_LOC1, "X_LOC1.ICN" },     { X_LOC2, "X_LOC2.ICN" },
               { X_LOC3, "X_LOC3.ICN" },     { XPRIMARY, "XPRIMARY.ICN" }, { Y_BFLG32, "Y-BFLG32.ICN" }, { Y_FLAG32, "Y-FLAG32.ICN" }, { YINYANG, "YINYANG.ICN" },
-              { ZOMBIE2, "ZOMBIE2.ICN" },   { ZOMBIE, "ZOMBIE.ICN" } } };
+              { ZOMBIE2, "ZOMBIE2.ICN" },   { ZOMBIE, "ZOMBIE.ICN" },   
+              { PORT_KEQING, "file:C:\\Heroes\\Pictures\\KN_1.icn" },
+              { PORT_ALFONSE, "file:C:\\Heroes\\Pictures\\KN_3.icn" },
+              { PORT_ANNA, "file:C:\\Heroes\\Pictures\\KN_2.icn" },
+              { PORT_SHARENA, "file:C:\\Heroes\\Pictures\\KN_4.icn" },
+              { PORT_FURINA, "file:C:\\Heroes\\Pictures\\KN_5.icn" },
+              { PORT_XIAO, "file:C:\\Heroes\\Pictures\\KN_6.icn" },
+              { PORT_CLORINDE, "file:C:\\Heroes\\Pictures\\KN_7.icn" },
+              { PORT_SHINJI, "file:C:\\Heroes\\Pictures\\KN_8.icn" },
+              { PORT_CHEVREUSE, "file:C:\\Heroes\\Pictures\\KN_9.icn" },
+              { PORT_NADAKHAN, "file:C:\\Heroes\\Pictures\\BARBAR_1.icn" },
+              { PORT_CLANCEE, "file:C:\\Heroes\\Pictures\\BARBAR_2.icn" },
+              { PORT_MAVUIKA, "file:C:\\Heroes\\Pictures\\BARBAR_3.icn" },
+              { PORT_DOUBLOON, "file:C:\\Heroes\\Pictures\\BARBAR_4.icn" },
+              { PORT_GULCH, "file:C:\\Heroes\\Pictures\\BARBAR_5.icn" },
+              { PORT_IRONBARON, "file:C:\\Heroes\\Pictures\\BARBAR_6.icn" },
+              { PORT_MURTESSA, "file:C:\\Heroes\\Pictures\\BARBAR_7.icn" },
+              { PORT_CYNO, "file:C:\\Heroes\\Pictures\\BARBAR_8.icn" },
+              { PORT_CANDACE, "file:C:\\Heroes\\Pictures\\BARBAR_9.icn" },
+              { PORT_WYPLASH, "file:C:\\Heroes\\Pictures\\MANCER_1.icn" },
+              { PORT_NUCKAL, "file:C:\\Heroes\\Pictures\\MANCER_2.icn" },
+              { PORT_KRUNCHA, "file:C:\\Heroes\\Pictures\\MANCER_3.icn" },
+              { PORT_SAMUKAI, "file:C:\\Heroes\\Pictures\\MANCER_4.icn" },
+              { PORT_HUTAO, "file:C:\\Heroes\\Pictures\\MANCER_5.icn" },
+              { PORT_VANGELIS, "file:C:\\Heroes\\Pictures\\MANCER_6.icn" },
+              { PORT_MORRO, "file:C:\\Heroes\\Pictures\\MANCER_7.icn" },
+              { PORT_BANSHA, "file:C:\\Heroes\\Pictures\\MANCER_8.icn" },
+              { PORT_SOULARCHER, "file:C:\\Heroes\\Pictures\\MANCER_9.icn" },
+              { PORT_KORRA, "file:C:\\Heroes\\Pictures\\SRC_1.icn" },
+              { PORT_TIKI, "file:C:\\Heroes\\Pictures\\SRC_2.icn" },
+              { PORT_NAHIDA, "file:C:\\Heroes\\Pictures\\SRC_3.icn" },
+              { PORT_AISLING, "file:C:\\Heroes\\Pictures\\SRC_4.icn" },
+              { PORT_FOCALORS, "file:C:\\Heroes\\Pictures\\SRC_5.icn" },
+              { PORT_YOIMIYA, "file:C:\\Heroes\\Pictures\\SRC_6.icn" },
+              { PORT_EI, "file:C:\\Heroes\\Pictures\\SRC_7.icn" },
+              { PORT_RAYLA, "file:C:\\Heroes\\Pictures\\SRC_8.icn" },
+              { PORT_CITLALI, "file:C:\\Heroes\\Pictures\\SRC_9.icn" },
+              { PORT_ARLECCHINO, "file:C:\\Heroes\\Pictures\\WARLOCK_1.icn" },
+              { PORT_ZUKO, "file:C:\\Heroes\\Pictures\\WARLOCK_2.icn" },
+              { PORT_AZULA, "file:C:\\Heroes\\Pictures\\WARLOCK_3.icn" },
+              { PORT_OZAI, "file:C:\\Heroes\\Pictures\\WARLOCK_4.icn" },
+              { PORT_CLOUSE, "file:C:\\Heroes\\Pictures\\WARLOCK_5.icn" },
+              { PORT_LORDVIREN, "file:C:\\Heroes\\Pictures\\WARLOCK_6.icn" },
+              { PORT_GARMADON, "file:C:\\Heroes\\Pictures\\WARLOCK_7.icn" },
+              { PORT_VERONICA, "file:C:\\Heroes\\Pictures\\WARLOCK_8.icn" },
+              { PORT_CLAUDIA, "file:C:\\Heroes\\Pictures\\WARLOCK_9.icn" },
+              { PORT_WU, "file:C:\\Heroes\\Pictures\\WIZ_1.icn" },
+              { PORT_AETHER, "file:C:\\Heroes\\Pictures\\WIZ_2.icn" },
+              { PORT_LUMINE, "file:C:\\Heroes\\Pictures\\WIZ_3.icn" },
+              { PORT_AANG, "file:C:\\Heroes\\Pictures\\WIZ_4.icn" },
+              { PORT_KIRAN, "file:C:\\Heroes\\Pictures\\WIZ_5.icn" },
+              { PORT_CALLUM, "file:C:\\Heroes\\Pictures\\WIZ_6.icn" },
+              { PORT_AARAVOS, "file:C:\\Heroes\\Pictures\\WIZ_7.icn" },
+              { PORT_ZHONGLI, "file:C:\\Heroes\\Pictures\\WIZ_8.icn" },
+              { PORT_VENTI, "file:C:\\Heroes\\Pictures\\WIZ_9.icn" },
+        } 
+    };
 }
 
 const char * ICN::getIcnFileName( const int icnId )
@@ -870,6 +926,114 @@ int ICN::getHeroPortraitIcnId( const int heroId )
         return ICN::PORT0069;
     case Heroes::JARKONAS:
         return ICN::PORT0070;
+        case Heroes::KEQING:
+        return ICN::PORT_KEQING;
+        case Heroes::ANNA:
+        return ICN::PORT_ANNA;
+        case Heroes::ALFONSE:
+        return ICN::PORT_ALFONSE;
+    case Heroes::SHARENA:
+        return ICN::PORT_SHARENA;
+    case Heroes::FURINA:
+        return ICN::PORT_FURINA;
+        case Heroes::XIAO:
+        return ICN::PORT_XIAO;
+        case Heroes::CLORINDE:
+        return ICN::PORT_CLORINDE;
+        case Heroes::SHINJI:
+        return ICN::PORT_SHINJI;
+        case Heroes::CHEVREUSE:
+        return ICN::PORT_CHEVREUSE;
+    case Heroes::NADAKHAN:
+        return ICN::PORT_NADAKHAN;
+    case Heroes::CLANCEE:
+        return ICN::PORT_CLANCEE;    
+        case Heroes::MAVUIKA:
+        return ICN::PORT_MAVUIKA;
+        case Heroes::DOUBLOON:
+        return ICN::PORT_DOUBLOON;
+        case Heroes::GULCH:
+        return ICN::PORT_GULCH;
+        case Heroes::MURTESSA:
+        return ICN::PORT_MURTESSA;
+        case Heroes::CYNO:
+        return ICN::PORT_CYNO;
+        case Heroes::CANDACE:
+        return ICN::PORT_CANDACE;
+        case Heroes::IRONBARON:
+        return ICN::PORT_IRONBARON;
+        case Heroes::WYPLASH:
+        return ICN::PORT_WYPLASH;
+        case Heroes::NUCKAL:
+        return ICN::PORT_NUCKAL;
+        case Heroes::KRUNCHA:
+        return ICN::PORT_KRUNCHA;
+        case Heroes::SAMUKAI:
+        return ICN::PORT_SAMUKAI;
+        case Heroes::HUTAO:
+        return ICN::PORT_HUTAO;
+        case Heroes::VANGELIS:
+        return ICN::PORT_VANGELIS;
+        case Heroes::MORRO:
+        return ICN::PORT_MORRO;
+        case Heroes::BANSHA:
+        return ICN::PORT_BANSHA;
+        case Heroes::SOULARCHER:
+        return ICN::PORT_SOULARCHER;
+        case Heroes::KORRA:
+        return ICN::PORT_KORRA;
+        case Heroes::TIKI:
+        return ICN::PORT_TIKI;
+        case Heroes::NAHIDA:
+        return ICN::PORT_NAHIDA;
+        case Heroes::AISLING:
+        return ICN::PORT_AISLING;
+        case Heroes::FOCALORS:
+        return ICN::PORT_FOCALORS;
+        case Heroes::YOIMIYA:
+        return ICN::PORT_YOIMIYA;
+        case Heroes::EI:
+        return ICN::PORT_EI;
+        case Heroes::RAYLA:
+        return ICN::PORT_RAYLA;
+        case Heroes::CITLALI:
+        return ICN::PORT_CITLALI;
+        case Heroes::ARLECCHINO:
+        return ICN::PORT_ARLECCHINO;
+        case Heroes::ZUKO:
+        return ICN::PORT_ZUKO;
+        case Heroes::AZULA:
+        return ICN::PORT_AZULA;
+        case Heroes::OZAI:
+        return ICN::PORT_OZAI;
+        case Heroes::CLOUSE:
+        return ICN::PORT_CLOUSE;
+        case Heroes::LORDVIREN:
+        return ICN::PORT_LORDVIREN;
+        case Heroes::GARMADON:
+        return ICN::PORT_GARMADON;
+        case Heroes::VERONICA:
+        return ICN::PORT_VERONICA;
+        case Heroes::CLAUDIA:
+        return ICN::PORT_CLAUDIA;
+        case Heroes::WU:
+        return ICN::PORT_WU;
+        case Heroes::AETHER:
+        return ICN::PORT_AETHER;
+        case Heroes::LUMINE:
+        return ICN::PORT_LUMINE;
+        case Heroes::AANG:
+        return ICN::PORT_AANG;
+        case Heroes::KIRAN:
+        return ICN::PORT_KIRAN;
+        case Heroes::CALLUM:
+        return ICN::PORT_CALLUM;
+        case Heroes::AARAVOS:
+        return ICN::PORT_AARAVOS;
+        case Heroes::VENTI:
+        return ICN::PORT_VENTI;
+        case Heroes::ZHONGLI:
+        return ICN::PORT_ZHONGLI;
     case Heroes::DEBUG_HERO:
         return ICN::PORT0059;
     default:

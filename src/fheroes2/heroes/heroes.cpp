@@ -84,27 +84,33 @@ namespace
 
         // Knight heroes from The Succession Wars.
         gettext_noop( "Lord Kilburn" ), gettext_noop( "Sir Gallant" ), gettext_noop( "Ector" ), gettext_noop( "Gwenneth" ), gettext_noop( "Tyro" ),
-        gettext_noop( "Ambrose" ), gettext_noop( "Ruby" ), gettext_noop( "Maximus" ), gettext_noop( "Dimitry" ),
+        gettext_noop( "Ambrose" ), gettext_noop( "Ruby" ), gettext_noop( "Maximus" ), gettext_noop("Keqing" ), gettext_noop( "Prince Alfonse" ), gettext_noop( "Commander Anna" ), gettext_noop( "Princess Sharena" ),
+        gettext_noop( "Lady Furina de Fontaine" ), gettext_noop( "Xiao" ), gettext_noop( "Clorinde" ), gettext_noop( "Shinji Ikari" ), gettext_noop( "Chevreuse" ),gettext_noop( "Dimitry" ),
 
         // Barbarian heroes from The Succession Wars.
         gettext_noop( "Thundax" ), gettext_noop( "Fineous" ), gettext_noop( "Jojosh" ), gettext_noop( "Crag Hack" ), gettext_noop( "Jezebel" ), gettext_noop( "Jaclyn" ),
-        gettext_noop( "Ergon" ), gettext_noop( "Tsabu" ), gettext_noop( "Atlas" ),
+        gettext_noop( "Ergon" ), gettext_noop( "Tsabu" ), gettext_noop( "Captain Nadakhan" ), gettext_noop( "Clancee" ), gettext_noop( "Haborym" ), gettext_noop( "Pirate Doubloon" ),
+        gettext_noop( "Chancellor Gulch" ), gettext_noop( "Iron Baron" ), gettext_noop( "Queen Murtessa" ), gettext_noop( "General Cyno" ), gettext_noop( "Candace" ), gettext_noop( "Atlas" ),
 
         // Sorceress heroes from The Succession Wars.
         gettext_noop( "Astra" ), gettext_noop( "Natasha" ), gettext_noop( "Troyan" ), gettext_noop( "Vatawna" ), gettext_noop( "Rebecca" ), gettext_noop( "Gem" ),
-        gettext_noop( "Ariel" ), gettext_noop( "Carlawn" ), gettext_noop( "Luna" ),
+        gettext_noop( "Ariel" ), gettext_noop( "Carlawn" ), gettext_noop( "Körra" ), gettext_noop( "Tiki" ), gettext_noop( "Lesser Lord Kusanali" ), gettext_noop( "Aisling" ),
+        gettext_noop( "Focalors" ), gettext_noop( "Ĵoimiya" ), gettext_noop( "Beelzebul" ), gettext_noop( "Rayla" ), gettext_noop( "Citlali" ), gettext_noop( "Luna" ),
 
         // Warlock heroes from The Succession Wars.
         gettext_noop( "Arie" ), gettext_noop( "Alamar" ), gettext_noop( "Vesper" ), gettext_noop( "Crodo" ), gettext_noop( "Barok" ), gettext_noop( "Kastore" ),
-        gettext_noop( "Agar" ), gettext_noop( "Falagar" ), gettext_noop( "Wrathmont" ),
+        gettext_noop( "Agar" ), gettext_noop( "Falagar" ), gettext_noop( "Peruere" ), gettext_noop( "Prince Zuko" ), gettext_noop( "Princess Azula" ), gettext_noop( "Fire Lord Ozai" ),
+        gettext_noop( "Clouse" ), gettext_noop( "Lord Viren" ), gettext_noop( "Lord Gramadon" ), gettext_noop( "Princess Veronica" ), gettext_noop( "Claudia" ), gettext_noop( "Wrathmont" ),
 
         // Wizard heroes from The Succession Wars.
         gettext_noop( "Myra" ), gettext_noop( "Flint" ), gettext_noop( "Dawn" ), gettext_noop( "Halon" ), gettext_noop( "Myrini" ), gettext_noop( "Wilfrey" ),
-        gettext_noop( "Sarakin" ), gettext_noop( "Kalindra" ), gettext_noop( "Mandigal" ),
+        gettext_noop( "Sarakin" ), gettext_noop( "Kalindra" ), gettext_noop( "Sensei Wu" ), gettext_noop( "Aether" ), gettext_noop( "Lumine" ), gettext_noop( "Aangius" ),
+        gettext_noop( "Kiran" ), gettext_noop( "Prince Callum" ), gettext_noop( "Aaravos" ), gettext_noop( "Morax" ), gettext_noop( "Barbatos" ), gettext_noop( "Mandigal" ),
 
         // Necromancer heroes from The Succession Wars.
         gettext_noop( "Zom" ), gettext_noop( "Darlana" ), gettext_noop( "Zam" ), gettext_noop( "Ranloo" ), gettext_noop( "Charity" ), gettext_noop( "Rialdo" ),
-        gettext_noop( "Roxana" ), gettext_noop( "Sandro" ), gettext_noop( "Celia" ),
+        gettext_noop( "Roxana" ), gettext_noop( "Sandro" ), gettext_noop( "General Wyplash" ), gettext_noop( "General Nuckal" ), gettext_noop( "General Kruncha" ),
+        gettext_noop( "Samukai, King of Underworld" ), gettext_noop( "Hu Tao" ), gettext_noop( "Skull Sorcerer Vangelis" ), gettext_noop( "Master of Wind Morro" ), gettext_noop( "Ghost General Bansha" ), gettext_noop( "Ghost Gneral Soul Archer" ), gettext_noop( "Celia" ),
 
         // The Succession Wars campaign heroes.
         gettext_noop( "Roland" ), gettext_noop( "Lord Corlagon" ), gettext_noop( "Sister Eliza" ), gettext_noop( "Archibald" ), gettext_noop( "Lord Halton" ),
@@ -237,6 +243,25 @@ const char * Heroes::getDefaultName( const int heroId )
 
     return _( defaultHeroNames[heroId] );
 }
+
+//Heroes::Heroes()
+//    : experience( 0 )
+//    , army( this )
+//    , _id( UNKNOWN )
+//    , portrait( UNKNOWN )
+//    , _race( Race::NONE )
+//    , _objectTypeUnderHero( MP2::OBJ_NONE )
+//    , path( *this )
+//    , direction( Direction::RIGHT )
+//    , sprite_index( 18 )
+//    , _patrolDistance( 0 )
+//    , _alphaValue( 255 )
+//    , _attackedMonsterTileIndex( -1 )
+//    , _aiRole( Role::HUNTER )
+//{
+    // Do nothing.
+//}
+
 
 Heroes::Heroes( const int heroId, const int race )
     : HeroBase( HeroBase::HEROES, race )
@@ -2067,13 +2092,33 @@ const fheroes2::Sprite & Heroes::GetPortrait( const int heroId, const int portra
 
             return mediumSizePortrait.try_emplace( heroId, std::move( output ) ).first->second;
         }
-        case PORT_SMALL:
+        case PORT_SMALL: {
             if ( heroId == Heroes::DEBUG_HERO ) {
                 return fheroes2::AGG::GetICN( ICN::MINIPORT, BRAX - 1 );
             }
 
-            // Since hero IDs start from 1 we have to deduct 1 from the ID.
-            return fheroes2::AGG::GetICN( ICN::MINIPORT, heroId - 1 );
+            // Original ICN::PORTMEDI sprites are badly rendered. Instead of them we're getting high quality ICN:PORT00xx file and resize it to a smaller image.
+            // TODO: find a better way to store these images, ideally in agg_image.cpp file.
+            static std::map<int, fheroes2::Sprite> smallSizePortrait;
+            auto iterSmall = smallSizePortrait.find( heroId );
+            if ( iterSmall != smallSizePortrait.end() ) {
+                return iterSmall->second;
+            }
+
+            const fheroes2::Sprite & original = fheroes2::AGG::GetICN( ICN::getHeroPortraitIcnId( heroId ), 0 );
+            fheroes2::Sprite output( 30, 22 );
+            fheroes2::Resize( original, output );
+
+            return smallSizePortrait.try_emplace( heroId, std::move( output ) ).first->second;
+        }
+
+
+            // if ( id == Heroes::DEBUG_HERO ) {
+            //     return fheroes2::AGG::GetICN( ICN::MINIPORT, BRAX - 1 );
+            // }
+
+            // // Since hero IDs start from 1 we have to deduct 1 from the ID.
+            // return fheroes2::AGG::GetICN( ICN::MINIPORT, heroId - 1 );
         default:
             break;
         }
@@ -2279,6 +2324,7 @@ void AllHeroes::Init()
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::CEALLACH, Race::KNGT, 5000 ) );
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::DRAKONIA, Race::WZRD, 5000 ) );
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::MARTINE, Race::SORC, 5000 ) );
+        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::SHARENA, Race::KNGT, 5000 ) );
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::JARKONAS, Race::BARB, 5000 ) );
     }
     else {

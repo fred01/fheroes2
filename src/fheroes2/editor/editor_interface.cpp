@@ -494,6 +494,7 @@ namespace
 
     bool verifyTerrainPlacement( const fheroes2::Point & tilePos, const Maps::ObjectGroup groupType, const int32_t objectType, std::string & errorMessage )
     {
+        return true;
         switch ( groupType ) {
         case Maps::ObjectGroup::ADVENTURE_ARTIFACTS: {
             const auto & objectInfo = Maps::getObjectInfo( groupType, objectType );
@@ -634,6 +635,7 @@ namespace
         case Maps::ObjectGroup::LANDSCAPE_TREES:
         case Maps::ObjectGroup::LANDSCAPE_WATER:
         case Maps::ObjectGroup::MONSTERS: {
+            return true;
             const auto & objectInfo = Maps::getObjectInfo( groupType, objectType );
 
             if ( !isObjectPlacementAllowed( objectInfo, tilePos ) ) {

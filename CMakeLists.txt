@@ -37,7 +37,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # Compile-time options
 #
 option(ENABLE_IMAGE "Enable the use of SDL_image (requires libpng)" OFF)
-option(ENABLE_TOOLS "Enable the build of additional tools" OFF)
+option(ENABLE_TOOLS "Enable the build of additional tools" ON)
 
 # Available only on macOS
 cmake_dependent_option(MACOS_APP_BUNDLE "Create a Mac app bundle" OFF "APPLE" OFF)
