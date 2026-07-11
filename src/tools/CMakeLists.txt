@@ -31,6 +31,7 @@ add_executable(bin2txt bin2txt.cpp)
 add_executable(extractor extractor.cpp)
 add_executable(h2dmgr h2dmgr.cpp)
 add_executable(icn2img icn2img.cpp)
+add_executable(map2fh2m map2fh2m.cpp)
 add_executable(pal2img pal2img.cpp)
 add_executable(til2img til2img.cpp)
 add_executable(xmi2midi xmi2midi.cpp)
@@ -40,6 +41,36 @@ target_link_libraries(bin2txt engine)
 target_link_libraries(extractor engine)
 target_link_libraries(h2dmgr engine)
 target_link_libraries(icn2img engine)
+target_link_libraries(map2fh2m engine)
+
+file(GLOB_RECURSE MAP2FH2M_SOURCES CONFIGURE_DEPENDS ../fheroes2/*.cpp)
+list(FILTER MAP2FH2M_SOURCES EXCLUDE REGEX "(^|/)game/fheroes2\\.cpp$")
+target_sources(map2fh2m PRIVATE ${MAP2FH2M_SOURCES})
+target_include_directories(
+	map2fh2m
+	PRIVATE
+	../fheroes2/agg
+	../fheroes2/ai
+	../fheroes2/army
+	../fheroes2/audio
+	../fheroes2/battle
+	../fheroes2/campaign
+	../fheroes2/castle
+	../fheroes2/dialog
+	../fheroes2/editor
+	../fheroes2/game
+	../fheroes2/gui
+	../fheroes2/h2d
+	../fheroes2/heroes
+	../fheroes2/image
+	../fheroes2/kingdom
+	../fheroes2/maps
+	../fheroes2/monster
+	../fheroes2/resource
+	../fheroes2/spell
+	../fheroes2/system
+	../fheroes2/world
+	)
 target_link_libraries(pal2img engine)
 target_link_libraries(til2img engine)
 target_link_libraries(xmi2midi engine)
