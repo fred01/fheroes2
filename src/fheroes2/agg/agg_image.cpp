@@ -59,6 +59,8 @@
 #include "ui_tool.h"
 #include "logging.h"
 
+#include <cstring>
+
 
 namespace
 {
