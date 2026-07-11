@@ -113,20 +113,21 @@ namespace
     bool appendObject( Maps::Map_Format::MapFormat & map, const uint32_t uid, std::vector<Part> parts )
     {
         std::sort( parts.begin(), parts.end(), partLess );
-        const int32_t anchorTile = parts.front().tile;
 
         for ( uint8_t groupId = 0; groupId < static_cast<uint8_t>( Maps::ObjectGroup::GROUP_COUNT ); ++groupId ) {
             const auto group = static_cast<Maps::ObjectGroup>( groupId );
             const std::vector<Maps::ObjectInfo> & objects = Maps::getObjectsByGroup( group );
             for ( size_t i = 0; i < objects.size(); ++i ) {
-                if ( sameObject( parts, anchorTile, objects[i] ) ) {
-                    map.tiles[anchorTile].objects.push_back( { uid, group, static_cast<uint32_t>( i ) } );
-                    return true;
+                for ( const Part & part : parts ) {
+                    if ( sameObject( parts, part.tile, objects[i] ) ) {
+                        map.tiles[part.tile].objects.push_back( { uid, group, static_cast<uint32_t>( i ) } );
+                        return true;
+                    }
                 }
             }
         }
 
-        std::cerr << "Cannot convert object UID " << uid << " at tile " << anchorTile << std::endl;
+        std::cerr << "Cannot convert object UID " << uid << " at tile " << parts.front().tile << std::endl;
         return false;
     }
 
@@ -161,10 +162,15 @@ namespace
             }
         }
 
+        size_t skippedObjectCount = 0;
         for ( auto & [uid, parts] : objects ) {
             if ( !appendObject( map, uid, std::move( parts ) ) ) {
-                return false;
+                ++skippedObjectCount;
             }
+        }
+
+        if ( skippedObjectCount > 0 ) {
+            std::cerr << "Skipped " << skippedObjectCount << " object(s) which are not available in the FH2M object set." << std::endl;
         }
 
         return true;
