@@ -808,10 +808,11 @@ Maps::Map_Format::HeroMetadata Heroes::getHeroMetadata() const
         heroMetadata.availableSpells.push_back( spell_book[i].GetID() );
     }
 
-    // Hero's secondary skills.
+    // Hero's secondary skills. A hero of a map being played may have fewer skills than the maximum,
+    // while the metadata always has a slot for every skill. The unused slots are left unset.
     const std::vector<Skill::Secondary> & skills = _secondarySkills.ToVector();
-    const size_t skillsSize = skills.size();
-    assert( heroMetadata.secondarySkill.size() == skillsSize && heroMetadata.secondarySkillLevel.size() == skillsSize );
+    const size_t skillsSize = std::min( skills.size(), heroMetadata.secondarySkill.size() );
+    assert( heroMetadata.secondarySkill.size() == heroMetadata.secondarySkillLevel.size() );
     for ( size_t i = 0; i < skillsSize; ++i ) {
         heroMetadata.secondarySkill[i] = static_cast<int8_t>( skills[i].Skill() );
         heroMetadata.secondarySkillLevel[i] = static_cast<uint8_t>( skills[i].Level() );
@@ -2324,7 +2325,6 @@ void AllHeroes::Init()
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::CEALLACH, Race::KNGT, 5000 ) );
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::DRAKONIA, Race::WZRD, 5000 ) );
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::MARTINE, Race::SORC, 5000 ) );
-        _heroes.emplace_back( std::make_unique<Heroes>( Heroes::SHARENA, Race::KNGT, 5000 ) );
         _heroes.emplace_back( std::make_unique<Heroes>( Heroes::JARKONAS, Race::BARB, 5000 ) );
     }
     else {
