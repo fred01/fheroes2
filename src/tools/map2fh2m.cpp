@@ -591,6 +591,13 @@ namespace
             return false;
         }
 
+        // The engine loads a map into the state the settings describe - the players of the map among
+        // other things. The game does this before loading a map and so must this tool, or a map would
+        // be loaded into the state left by the previous one.
+        Settings & conf = Settings::Get();
+        conf.setCurrentMapInfo( fileInfo );
+        conf.GetPlayers().SetStartGame();
+
         // Let the engine load the map. This gives us every object it understands together with all
         // of its data instead of only the raw tile information.
         if ( !world.LoadMapMP2( inputPath, fileInfo.version == GameVersion::SUCCESSION_WARS ) ) {
@@ -1336,6 +1343,25 @@ namespace
                   << "  Ultimate Artifact placed: " << ultimateArtifactsPlaced << std::endl
                   << "  Objects with a contradictory rendering order: " << contradictoryOrderings << std::endl
                   << "  Metadata entries: " << metadataEntries << std::endl;
+
+        // The header of a legacy map does not have to list every player the map actually has: the
+        // header of a campaign map only lists the players of the campaign scenario. The modern format
+        // works the other way round - a hero of a color that is not a player of the map is not even
+        // created. So the players are worked out from the objects of the map, the way the Editor does
+        // it, and only who may be played by a human is kept as the legacy map defines it.
+        const PlayerColorsSet legacyHumanColors = map.humanPlayerColors;
+
+        if ( !Maps::updateMapPlayers( map ) ) {
+            std::cerr << "Error: failed to work out the players of the map." << std::endl;
+            return false;
+        }
+
+        if ( const PlayerColorsSet humanColors = legacyHumanColors & map.availablePlayerColors; humanColors != 0 ) {
+            map.humanPlayerColors = humanColors;
+
+            // Every player of the map may be played by the computer.
+            map.computerPlayerColors = map.availablePlayerColors;
+        }
 
         // The Editor refuses to open a map that it cannot fully reconstruct, so run the very same
         // procedure it uses to make sure that a broken map is never written out.
