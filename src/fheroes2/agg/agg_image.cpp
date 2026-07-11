@@ -32,6 +32,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -531,71 +532,25 @@ namespace
         _icnVsSprite[id][assetIndex] = fheroes2::decodeICNSprite( data, dataEnd, header1 );
     }
 
-    // Function to check if a string starts with a specific prefix
-    bool starts_with(const char *str, const char *prefix) {
-        if (str == NULL || prefix == NULL) {
-            return false;
-        }
-        size_t prefix_len = strlen(prefix);
-        // If prefix is longer than str, it can’t match
-        if (strlen(str) < prefix_len) {
-            return false;
-        }
-        // Compare only the first prefix_len characters
-        return strncmp(str, prefix, prefix_len) == 0;
-    }
-
-    char * remove_prefix(const char *str, const char *prefix) {
-        // Check if the input string or prefix is NULL
-        if (str == NULL || prefix == NULL) {
-            return NULL;
-        }
-
-        size_t prefix_len = strlen(prefix);
-        size_t str_len = strlen(str);
-
-        // Check if the string starts with the prefix
-        if (strncmp(str, prefix, prefix_len) == 0) {
-            // Allocate memory for the new string (excluding the prefix)
-            char *result = (char *)malloc((str_len - prefix_len + 1) * sizeof(char));
-            if (result == NULL) {
-                // Memory allocation failed
-                return NULL;
-            }
-
-            // Copy the part of the string after the prefix
-            strcpy(result, str + prefix_len);
-            return result;
-        }
-
-        // If the prefix is not found, return a copy of the original string
-        char *result = (char *)malloc((str_len + 1) * sizeof(char));
-        if (result == NULL) {
-            // Memory allocation failed
-            return NULL;
-        }
-
-        strcpy(result, str);
-        return result;
-    }
-
-
     bool readIcnFromAgg( const int id )
     {
         // If this assertion blows up then something wrong with your logic and you load resources more than once!
         assert( _icnVsSprite[id].empty() );
 
-        // std::vector<uint8_t> body;
         std::vector<uint8_t> body;
 
+        const std::string filename = ICN::getIcnFileName( id );
 
-        const char * filename = ICN::getIcnFileName( id );
-        const char * filePrefix = "file:";
+        // An ICN name may reference an external file (e.g. a custom hero portrait) using a
+        // "file:<path>" prefix. In this case the sprite data is read directly from that file
+        // instead of from the AGG archive.
+        const std::string_view filePrefix{ "file:" };
 
-        if (starts_with(filename, filePrefix)) {
-            VERBOSE_LOG( "Loading ICN: " << filename );
-            // Load Sharena's portrait from the specified file path
-            const char * filepath = remove_prefix(filename, filePrefix);
+        if ( filename.compare( 0, filePrefix.size(), filePrefix ) == 0 ) {
+            const std::string filepath = filename.substr( filePrefix.size() );
+
+            VERBOSE_LOG( "Loading ICN from file: " << filepath )
+
             std::ifstream file( filepath, std::ios_base::binary | std::ios_base::ate );
             if ( file.is_open() ) {
                 const size_t fileSize = static_cast<size_t>( file.tellg() );
@@ -604,11 +559,10 @@ namespace
                     file.seekg( 0, std::ios_base::beg );
                     file.read( reinterpret_cast<char *>( body.data() ), body.size() );
                 }
-                file.close();
             }
-            VERBOSE_LOG( "Loading ICN: " << filename << "Complete" );
-        } else {
-            body = ::AGG::getDataFromAggFile( ICN::getIcnFileName( id ), false );
+        }
+        else {
+            body = ::AGG::getDataFromAggFile( filename, false );
         }
 
 

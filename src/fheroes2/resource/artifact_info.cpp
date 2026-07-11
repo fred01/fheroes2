@@ -44,14 +44,14 @@ namespace
             = {
                 { gettext_noop( "Invalid Artifact" ), gettext_noop( "Invalid Artifact" ), nullptr, {}, {} },
                 // Ultimate artifacts do not have discovery event description as they are not supposed to be found on map.
-                { gettext_noop( "Ultimate Book of Knowledge" ), gettext_noop( "The %{name} increases the hero's knowledge by %{count}." ), //nullptr, {}, {} },
-                { gettext_noop( "Ultimate Sword of Dominion" ), gettext_noop( "The %{name} increases the hero's attack skill by %{count}." ), //nullptr, {}, {} },
-                { gettext_noop( "Ultimate Cloak of Protection" ), gettext_noop( "The %{name} increases the hero's defense skill by %{count}." ), //nullptr, {}, {} },
-                { gettext_noop( "Ultimate Wand of Magic" ), gettext_noop( "The %{name} increases the hero's spell power by %{count}." ), //nullptr, {}, {} },
-                { gettext_noop( "Ultimate Shield" ), gettext_noop( "The %{name} increases the hero's attack and defense skills by %{count} each." ), //nullptr, {}, {} },
-                { gettext_noop( "Ultimate Staff" ), gettext_noop( "The %{name} increases the hero's spell power and knowledge by %{count} each." ), //nullptr, {}, {} },
-                { gettext_noop( "Ultimate Crown" ), gettext_noop( "The %{name} increases each of the hero's basic skills by %{count} points." ), //nullptr, {}, {} },
-                { gettext_noop( "Golden Goose" ), gettext_noop( "The %{name} brings in an income of %{count} gold per day." ), //nullptr, {}, {} },
+                { gettext_noop( "Ultimate Book of Knowledge" ), gettext_noop( "The %{name} increases the hero's knowledge by %{count}." ), nullptr, {}, {} },
+                { gettext_noop( "Ultimate Sword of Dominion" ), gettext_noop( "The %{name} increases the hero's attack skill by %{count}." ), nullptr, {}, {} },
+                { gettext_noop( "Ultimate Cloak of Protection" ), gettext_noop( "The %{name} increases the hero's defense skill by %{count}." ), nullptr, {}, {} },
+                { gettext_noop( "Ultimate Wand of Magic" ), gettext_noop( "The %{name} increases the hero's spell power by %{count}." ), nullptr, {}, {} },
+                { gettext_noop( "Ultimate Shield" ), gettext_noop( "The %{name} increases the hero's attack and defense skills by %{count} each." ), nullptr, {}, {} },
+                { gettext_noop( "Ultimate Staff" ), gettext_noop( "The %{name} increases the hero's spell power and knowledge by %{count} each." ), nullptr, {}, {} },
+                { gettext_noop( "Ultimate Crown" ), gettext_noop( "The %{name} increases each of the hero's basic skills by %{count} points." ), nullptr, {}, {} },
+                { gettext_noop( "Golden Goose" ), gettext_noop( "The %{name} brings in an income of %{count} gold per day." ), nullptr, {}, {} },
 
                 { gettext_noop( "Arcane Necklace of Magic" ),
                   gettext_noop( "The %{name} increases the hero's spell power by %{count}." ),
