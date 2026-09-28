@@ -56,9 +56,6 @@
 #include "ui_language.h"
 #include "ui_text.h"
 #include "ui_tool.h"
-#include "logging.h"
-#include "settings.h"
-#include "system.h"
 
 namespace
 {
@@ -664,42 +661,8 @@ namespace
         _icnVsSprite[id][assetIndex] = fheroes2::decodeICNSprite( data, dataEnd, header1 );
     }
 
-    // True if the ICN id belongs to the contiguous range of custom hero portraits that are loaded from
-    // external PNG files rather than from an AGG archive.
-    bool isCustomPortraitIcn( const int id )
-    {
-        return id >= ICN::PORT_KEQING && id <= ICN::PORT_VENTI;
-    }
-
-    // Loads a custom hero portrait from `files/images/portraits/<name>` where <name> comes from
-    // `ICN::getIcnFileName( id )` (a PNG filename). Returns true on success.
-    // Requires the engine to be built with ENABLE_IMAGE=ON (libpng / SDL_image) for PNG support;
-    // when built without it, only BMP is supported and PNG portraits will silently fail to load.
-    bool loadCustomPortrait( const int id )
-    {
-        assert( _icnVsSprite[id].empty() );
-
-        const char * fileName = ICN::getIcnFileName( id );
-        if ( fileName == nullptr || *fileName == '\0' ) {
-            return false;
-        }
-
-        std::string fullPath;
-        if ( !Settings::findFile( System::concatPath( System::concatPath( "files", "images" ), "portraits" ), fileName, fullPath ) ) {
-            VERBOSE_LOG( "Custom portrait file not found: " << fileName )
-            return false;
-        }
-
-        fheroes2::Sprite portrait;
-        if ( !fheroes2::Load( fullPath, portrait ) ) {
-            VERBOSE_LOG( "Failed to load custom portrait: " << fullPath )
-            return false;
-        }
-
-        _icnVsSprite[id].push_back( std::move( portrait ) );
-        return true;
-    }
-
+    // This function returns true if sprites were successfully loaded from AGG file.
+    // WARNING: this function must be called once - only in the beginning of `loadICN()` function.
     bool readIcnFromAgg( const int id )
     {
         // If this assertion blows up then something wrong with your logic and you load resources more than once!
@@ -5710,16 +5673,13 @@ namespace
             return;
         }
 
-        // Load the original ICN from AGG file, or from an external PNG for custom hero portraits.
+        // Load the original ICN from AGG file.
         // WARNING: The `readIcnFromAgg()` function must be called only in this place!
-        if ( id < ICN::LAST_VALID_FILE_ICN ) {
-            const bool loaded = isCustomPortraitIcn( id ) ? loadCustomPortrait( id ) : readIcnFromAgg( id );
-            if ( !loaded ) {
-                // The ICN `id` is not present in AGG file. In example, if you try to load PoL ICN from SW AGG file.
-                // In order to avoid subsequent attempts to get resources from this ICN we are making it as non-empty.
-                _icnVsSprite[id].resize( 1 );
-                return;
-            }
+        if ( id < ICN::LAST_VALID_FILE_ICN && !readIcnFromAgg( id ) ) {
+            // The ICN `id` is not present in AGG file. In example, if you try to load PoL ICN from SW AGG file.
+            // In order to avoid subsequent attempts to get resources from this ICN we are making it as non-empty.
+            _icnVsSprite[id].resize( 1 );
+            return;
         }
 
         // WARNING: The `processICN()` function must be called only in this place!

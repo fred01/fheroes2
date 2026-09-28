@@ -1232,13 +1232,17 @@ int Dialog::selectHeroes( const int32_t heroId /* = Heroes::UNKNOWN */ )
     const bool isPoLHeroesAllowed = ( version == GameVersion::PRICE_OF_LOYALTY || version == GameVersion::RESURRECTION );
 
     std::vector<int32_t> heroes( static_cast<int>( isPoLHeroesAllowed ? Heroes::JARKONAS : Heroes::BRAX ), Heroes::UNKNOWN );
+    std::iota( heroes.begin(), heroes.end(), Heroes::UNKNOWN + 1 );
+
+    // Heroes defined by external portrait files.
+    for ( int32_t hid = Heroes::FIRST_CUSTOM_HERO; hid < Heroes::getHeroesCount(); ++hid ) {
+        heroes.push_back( hid );
+    }
 
     if ( heroes.empty() ) {
         fheroes2::showStandardTextMessage( _( "Warning" ), _( "There are no heroes to select from." ), Dialog::OK );
         return Heroes::UNKNOWN;
     }
-
-    std::iota( heroes.begin(), heroes.end(), Heroes::UNKNOWN + 1 );
 
     SelectEnumHeroes listbox( { 300, fheroes2::Display::instance().height() - dialogHeightDeduction }, _( "Select Hero:" ) );
 

@@ -98,15 +98,6 @@ public:
         AMBROSE,
         RUBY,
         MAXIMUS,
-        KEQING,
-        ANNA,
-        ALFONSE,
-        SHARENA,
-        FURINA,
-        XIAO,
-        CLORINDE,
-        SHINJI,
-        CHEVREUSE,
         DIMITRY,
 
         // Barbarian heroes from The Succession Wars.
@@ -118,15 +109,6 @@ public:
         JACLYN,
         ERGON,
         TSABU,
-        NADAKHAN,
-        CLANCEE,
-        MAVUIKA,
-        DOUBLOON,
-        GULCH,
-        MURTESSA,
-        CYNO,
-        CANDACE,
-        IRONBARON,
         ATLAS,
 
         // Sorceress heroes from The Succession Wars.
@@ -138,15 +120,6 @@ public:
         GEM,
         ARIEL,
         CARLAWN,
-        KORRA,
-        TIKI,
-        NAHIDA,
-        AISLING,
-        FOCALORS,
-        YOIMIYA,
-        EI,
-        RAYLA,
-        CITLALI,
         LUNA,
 
         // Warlock heroes from The Succession Wars.
@@ -158,15 +131,6 @@ public:
         KASTORE,
         AGAR,
         FALAGAR,
-        ARLECCHINO,
-        ZUKO,
-        AZULA,
-        OZAI,
-        CLOUSE,
-        LORDVIREN,
-        GARMADON,
-        VERONICA,
-        CLAUDIA,
         WRATHMONT,
 
         // Wizard heroes from The Succession Wars.
@@ -178,15 +142,6 @@ public:
         WILFREY,
         SARAKIN,
         KALINDRA,
-        WU,
-        AETHER,
-        LUMINE,
-        AANG,
-        KIRAN,
-        CALLUM,
-        AARAVOS,
-        ZHONGLI,
-        VENTI,
         MANDIGAL,
 
         // Necromancer heroes from The Succession Wars.
@@ -198,15 +153,6 @@ public:
         RIALDO,
         ROXANA,
         SANDRO,
-        WYPLASH,
-        NUCKAL,
-        KRUNCHA,
-        SAMUKAI,
-        HUTAO,
-        VANGELIS,
-        MORRO,
-        BANSHA,
-        SOULARCHER,
         CELIA,
 
         // The Succession Wars campaign heroes.
@@ -232,11 +178,14 @@ public:
 
         // Debug hero. Should not be used anywhere outside the development!
         DEBUG_HERO,
-        
+
         // Resurrection expansion heroes.
 
         // IMPORTANT! Put all new heroes just above this line.
-        HEROES_COUNT
+
+        // Heroes defined by external portrait files (see custom_heroes.h) get IDs starting from this value.
+        // Their number is not known at compile time: use getHeroesCount() to get the total number of heroes.
+        FIRST_CUSTOM_HERO
     };
 
     enum : uint32_t
@@ -774,10 +723,13 @@ public:
     static const fheroes2::Sprite & GetPortrait( const int heroId, const int portraitType );
     static const char * getDefaultName( const int heroId );
 
-    static bool isValidId( const int32_t heroId )
-    {
-        return heroId > UNKNOWN && heroId < HEROES_COUNT;
-    }
+    // Returns the total number of hero IDs including UNKNOWN, the original heroes and all custom heroes.
+    static int32_t getHeroesCount();
+
+    static bool isValidId( const int32_t heroId );
+
+    // Returns true if the hero is defined by an external portrait file (see custom_heroes.h).
+    static bool isCustomHeroId( const int32_t heroId );
 
     void resetHeroSprite();
 
@@ -903,11 +855,7 @@ public:
 
     // Return the maximum allowed heroes on map limited by the count of hero portraits
     // and by the count of her default names.
-    static constexpr size_t getMaximumAllowedHeroes()
-    {
-        // We exclude the "UNKNOWN" hero, the "debug" hero, all 17 heroes from campaign.
-        return Heroes::HEROES_COUNT - 2 - 17;
-    }
+    static size_t getMaximumAllowedHeroes();
 
     Heroes * Get( const int heroId ) const;
     Heroes * Get( const fheroes2::Point & center ) const;

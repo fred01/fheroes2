@@ -49,6 +49,7 @@
 #include "game_language.h"
 #include "game_over.h"
 #include "game_string.h"
+#include "heroes.h"
 #include "icn.h"
 #include "image.h"
 #include "interface_list.h"
@@ -125,7 +126,8 @@ namespace
         fheroes2::Blit( castleRightFlag, 0, 0, castleIcon, castleFrame.width() + castleLeftFlag.width() + 4, 5, castleRightFlag.width(), castleRightFlag.height() );
 
         if ( heroPortait > 0 ) {
-            const fheroes2::Sprite & heroPortrait = fheroes2::AGG::GetICN( ICN::MINIPORT, heroPortait - 1 );
+            // Custom heroes have no mini-portraits in ICN::MINIPORT, so the portrait is resolved by hero ID.
+            const fheroes2::Sprite & heroPortrait = Heroes::GetPortrait( heroPortait, PORT_SMALL );
             fheroes2::Copy( heroPortrait, 0, 0, castleIcon, castleLeftFlag.width() + 6, 4, heroPortrait.width(), heroPortrait.height() );
         }
         else {
@@ -263,7 +265,7 @@ namespace
         assert( heroMetadata != nullptr );
 
         if ( heroMetadata->customPortrait > 0 ) {
-            const fheroes2::Sprite & heroPortrait = fheroes2::AGG::GetICN( ICN::getHeroPortraitIcnId( heroMetadata->customPortrait ), 0 );
+            const fheroes2::Sprite & heroPortrait = Heroes::GetPortrait( heroMetadata->customPortrait, PORT_BIG );
 
             fheroes2::Copy( heroPortrait, 0, 0, output, selectConditionRoi.x + 5, selectConditionRoi.y + 6, heroPortrait.width(), heroPortrait.height() );
         }
