@@ -63,7 +63,7 @@ namespace
             assert( !spells.empty() && spells.size() < 25 );
 
             // Figure out how many rows and columns we want to display.
-            for ( size_t i = 1; i < 5; ++i ) {
+            for ( size_t i = 1; i <= 5; ++i ) {
                 if ( i * i >= _spells.size() ) {
                     _spellsPerRow = i;
                     break;
