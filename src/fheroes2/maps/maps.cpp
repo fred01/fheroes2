@@ -461,6 +461,21 @@ MapsIndexes Maps::getVisibleMonstersAroundHero( const Heroes & hero )
     return monsters;
 }
 
+bool Maps::isTileWithinScoutingArea( const int32_t centerIndex, const int32_t tileIndex, const int32_t scoutingDistance )
+{
+    if ( scoutingDistance <= 0 || !Maps::isValidAbsIndex( centerIndex ) || !Maps::isValidAbsIndex( tileIndex ) ) {
+        return false;
+    }
+
+    const fheroes2::Point center = Maps::GetPoint( centerIndex );
+    const fheroes2::Point tile = Maps::GetPoint( tileIndex );
+
+    const int32_t dx = tile.x - center.x;
+    const int32_t dy = tile.y - center.y;
+
+    return dx * dx + dy * dy < getSquaredScoutingRadiusLimit( scoutingDistance );
+}
+
 void Maps::ClearFog( const int32_t tileIndex, const int32_t scoutingDistance, const PlayerColor playerColor )
 {
     if ( scoutingDistance <= 0 || !Maps::isValidAbsIndex( tileIndex ) ) {

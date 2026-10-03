@@ -232,9 +232,13 @@ public:
 
     void LossPostActions();
 
-    // Checks whether this tile is visible to any hero who has an artifact with the VIEW_MONSTER_INFORMATION
-    // bonus (for example, a Crystal Ball)
+    // Checks whether any hero of the kingdom has an artifact with the VIEW_MONSTER_INFORMATION bonus (for example,
+    // a Crystal Ball). Its effect is not limited by distance and works for any tile which is not covered by fog.
     bool IsTileVisibleFromCrystalBall( const int32_t dest ) const;
+
+    // Checks whether this tile is within the viewable area of any hero of the kingdom who has the Scouting skill.
+    // Such heroes are able to see detailed information about enemy heroes and towns.
+    bool isTileVisibleByScoutingHero( const int32_t dest ) const;
 
     static uint32_t GetMaxHeroes();
 

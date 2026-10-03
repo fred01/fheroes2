@@ -12040,10 +12040,10 @@ msgstr "Кристальный Шар"
 
 msgid ""
 "The %{name} lets the hero get more specific information about monsters, "
-"enemy heroes, and castles nearby the hero."
+"enemy heroes, and castles across the whole explored map."
 msgstr ""
 "%{name} предоставляет подробную информацию о существах, вражеских героях и "
-"замках, рядом с которыми стоит герой."
+"замках на всей разведанной части карты."
 
 msgid ""
 "You come upon a caravan of gypsies who are feasting and fortifying their "
@@ -12938,3 +12938,6 @@ msgstr "Чем сильнее становится %{town}, тем сильне�
 
 msgid "The captain has comprehended the secrets of magic and can now learn spells up to level %{level}."
 msgstr "Капитан постиг тайны магии и теперь может изучать заклинания вплоть до %{level}-го уровня."
+
+msgid "The hero is also able to see detailed information about enemy heroes and towns within the hero's viewable area."
+msgstr "Кроме того, герой видит подробную информацию о вражеских героях и городах в пределах своего поля зрения."

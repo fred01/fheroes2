@@ -107,6 +107,9 @@ namespace Maps
     Indexes GetObjectPositions( int32_t center, const MP2::MapObjectType objectType, bool ignoreHeroes );
 
     void ClearFog( const int32_t tileIndex, const int32_t scoutingDistance, const PlayerColor playerColor );
+
+    // Checks whether the tile is within the area which ClearFog() reveals around the center tile for the given scouting distance.
+    bool isTileWithinScoutingArea( const int32_t centerIndex, const int32_t tileIndex, const int32_t scoutingDistance );
     int32_t getFogTileCountToBeRevealed( const int32_t tileIndex, const int32_t scoutingDistance, const PlayerColor playerColor );
 
     // Returns the approximate distance between two tiles with given indexes. This distance is calculated as the number of

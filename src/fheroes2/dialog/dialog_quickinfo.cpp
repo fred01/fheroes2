@@ -631,7 +631,8 @@ namespace
         const PlayerColor currentColor = conf.CurrentColor();
         const Kingdom & kingdom = world.GetKingdom( currentColor );
 
-        const bool isDetailedView = castle.isFriends( currentColor ) || kingdom.IsTileVisibleFromCrystalBall( castle.GetIndex() );
+        const bool isDetailedView = castle.isFriends( currentColor ) || kingdom.IsTileVisibleFromCrystalBall( castle.GetIndex() )
+                                    || kingdom.isTileVisibleByScoutingHero( castle.GetIndex() );
         const uint32_t thievesGuildsCount = kingdom.GetCountThievesGuild();
 
         text.set( _( "Defenders:" ), fheroes2::FontType::smallWhite() );
@@ -711,7 +712,8 @@ namespace
             const bool isFriend = ColorBase( hero.GetColor() ).isFriends( conf.CurrentColor() );
             const bool isUnderIdentifyHeroSpell = kingdom.Modes( Kingdom::IDENTIFYHERO );
 
-            return ( isNeutralHero || isFriend || isUnderIdentifyHeroSpell || kingdom.IsTileVisibleFromCrystalBall( hero.GetIndex() ) );
+            return ( isNeutralHero || isFriend || isUnderIdentifyHeroSpell || kingdom.IsTileVisibleFromCrystalBall( hero.GetIndex() )
+                     || kingdom.isTileVisibleByScoutingHero( hero.GetIndex() ) );
         }();
 
         const Heroes * activeHero = dynamic_cast<const Heroes *>( &hero );

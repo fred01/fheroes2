@@ -519,7 +519,7 @@ namespace
                   {},
                   {} },
                 { gettext_noop( "Crystal Ball" ),
-                  gettext_noop( "The %{name} lets the hero get more specific information about monsters, enemy heroes, and castles nearby the hero." ),
+                  gettext_noop( "The %{name} lets the hero get more specific information about monsters, enemy heroes, and castles across the whole explored map." ),
                   gettext_noop(
                       "You come upon a caravan of gypsies who are feasting and fortifying their bodies with mead. They call you forward and say \"If you prove that you can dance the Rama-Buta, we will reward you.\" You don't know it, but try anyway. They laugh hysterically, but admire your bravery, giving you a Crystal Ball." ),
                   {},

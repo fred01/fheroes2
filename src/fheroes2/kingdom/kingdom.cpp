@@ -843,19 +843,25 @@ std::set<Heroes *> Kingdoms::resetRecruits()
 
 bool Kingdom::IsTileVisibleFromCrystalBall( const int32_t dest ) const
 {
-    for ( const Heroes * hero : heroes ) {
-        assert( hero != nullptr );
-
-        if ( hero->GetBagArtifacts().isArtifactBonusPresent( fheroes2::ArtifactBonusType::VIEW_MONSTER_INFORMATION ) ) {
-            const uint32_t crystalBallDistance = Heroes::GetVisionsDistance();
-
-            if ( Maps::GetStraightLineDistance( hero->GetIndex(), dest ) <= crystalBallDistance ) {
-                return true;
-            }
-        }
+    if ( !Maps::isValidAbsIndex( dest ) || world.getTile( dest ).isFog( GetColor() ) ) {
+        return false;
     }
 
-    return false;
+    return std::any_of( heroes.begin(), heroes.end(), []( const Heroes * hero ) {
+        assert( hero != nullptr );
+
+        return hero->GetBagArtifacts().isArtifactBonusPresent( fheroes2::ArtifactBonusType::VIEW_MONSTER_INFORMATION );
+    } );
+}
+
+bool Kingdom::isTileVisibleByScoutingHero( const int32_t dest ) const
+{
+    return std::any_of( heroes.begin(), heroes.end(), [dest]( const Heroes * hero ) {
+        assert( hero != nullptr );
+
+        return hero->GetLevelSkill( Skill::Secondary::SCOUTING ) != Skill::Level::NONE
+               && Maps::isTileWithinScoutingArea( hero->GetIndex(), dest, hero->GetScoutingDistance() );
+    } );
 }
 
 Cost Kingdom::_getKingdomStartingResources( const int difficulty ) const

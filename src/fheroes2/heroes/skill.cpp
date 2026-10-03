@@ -510,6 +510,8 @@ std::string Skill::Secondary::GetDescription( const Heroes & hero ) const
     }
     case SCOUTING: {
         str = _n( "%{skill} increases the hero's viewable area by one square.", "%{skill} increases the hero's viewable area by %{count} squares.", count );
+        str += "\n\n";
+        str.append( _( "The hero is also able to see detailed information about enemy heroes and towns within the hero's viewable area." ) );
         break;
     }
     case DIPLOMACY: {
