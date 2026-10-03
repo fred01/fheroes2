@@ -103,17 +103,14 @@ jobs:
             FHEROES2_WITH_TSAN: ON
         - name: macOS SDL2
           on: [ 'pull_request', 'push' ]
-          os: macos-26-intel
-          arch: x86_64
+          os: macos-latest
+          arch: arm64
           dependencies: sdl2 sdl2_mixer sdl2_image
           env:
-            CFLAGS: --target=x86_64-apple-macos10.15
-            CXXFLAGS: --target=x86_64-apple-macos10.15
-            LDFLAGS: --target=x86_64-apple-macos10.15
             FHEROES2_STRICT_COMPILATION: ON
             FHEROES2_WITH_TOOLS: ON
             FHEROES2_WITH_IMAGE: ON
-          package_name: fheroes2_macos_x86-64_SDL2.zip
+          package_name: fheroes2_macos_arm64_SDL2.zip
           package_files: >-
             LICENSE
             changelog.txt
@@ -125,7 +122,7 @@ jobs:
             ./script/demo/download_demo_version.sh
             ./script/homm2/extract_homm2_resources.sh
             script/macos/Brewfile
-          tools_package_name: fheroes2_tools_macos_x86-64_SDL2.zip
+          tools_package_name: fheroes2_tools_macos_arm64_SDL2.zip
           tools_package_files: >-
             LICENSE
             ./docs/GRAPHICAL_ASSETS.md
@@ -138,8 +135,8 @@ jobs:
             ./src/dist/tools/pal2img
             ./src/dist/tools/til2img
             ./src/dist/tools/xmi2midi
-          release_name: macOS x86-64 build with SDL2 (latest commit)
-          release_tag: fheroes2-osx-sdl2_dev
+          release_name: macOS ARM64 (Apple Silicon) build with SDL2 (latest commit)
+          release_tag: fheroes2-osx-arm64-sdl2_dev
         - name: macOS SDL2 App Bundle
           on: [ 'pull_request' ]
           os: macos-latest
