@@ -108,12 +108,20 @@ namespace
             case Spell::PARALYZE:
             case Spell::BLIND:
             case Spell::PETRIFY:
+            case Spell::BERSERKER:
+            case Spell::DISRUPTINGRAY:
+            case Spell::SLOW:
                 monsterSpecial += abilityIter->percentage / 100.0;
                 break;
             case Spell::DISPEL:
             case Spell::CURSE:
                 // These spell are very weak and do not impact much during battle.
                 monsterSpecial += abilityIter->percentage / 100.0 / 10.0;
+                break;
+            case Spell::LIGHTNINGBOLT:
+            case Spell::COLDRAY:
+                // A damage spell adds extra damage instead of disabling an enemy stack, so it is worth less than Paralyze or Blind.
+                monsterSpecial += abilityIter->percentage / 100.0 / 2.0;
                 break;
             default:
                 // Did you add a new spell casting ability? Add the logic above!
@@ -219,8 +227,8 @@ namespace
             { M82::GENIATTK, M82::GENIKILL, M82::GENIMOVE, M82::GENIWNCE, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Genie
             { M82::MEDSATTK, M82::MEDSKILL, M82::MEDSMOVE, M82::MEDSWNCE, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Medusa
             { M82::EELMATTK, M82::EELMKILL, M82::EELMMOVE, M82::EELMWNCE, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Earth Elemental
-            { M82::AELMATTK, M82::AELMKILL, M82::AELMMOVE, M82::AELMWNCE, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Air Elemental
-            { M82::FELMATTK, M82::FELMKILL, M82::FELMMOVE, M82::FELMWNCE, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Fire Elemental
+            { M82::AELMATTK, M82::AELMKILL, M82::AELMMOVE, M82::AELMWNCE, M82::UNKNOWN, M82::AELMKILL, M82::UNKNOWN, M82::UNKNOWN }, // Air Elemental
+            { M82::FELMATTK, M82::FELMKILL, M82::FELMMOVE, M82::FELMWNCE, M82::FELMATTK, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Fire Elemental
             { M82::WELMATTK, M82::WELMKILL, M82::WELMMOVE, M82::WELMWNCE, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Water Elemental
             { M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Random Monster
             { M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN, M82::UNKNOWN }, // Random Monster 1
@@ -297,7 +305,7 @@ namespace
             { 8, 9, 6, 10, 35, Speed::AVERAGE, 0, 0, {}, {} }, // Medusa
             { 8, 8, 4, 5, 50, Speed::SLOW, 0, 0, {}, {} }, // Earth Elemental
             { 7, 7, 2, 8, 35, Speed::VERYFAST, 0, 0, {}, {} }, // Air Elemental
-            { 8, 6, 4, 6, 40, Speed::FAST, 0, 0, {}, {} }, // Fire Elemental
+            { 8, 6, 4, 6, 40, Speed::FAST, 12, 0, {}, {} }, // Fire Elemental
             { 6, 8, 3, 7, 45, Speed::AVERAGE, 0, 0, {}, {} }, // Water Elemental
             { 0, 0, 0, 0, 0, Speed::VERYSLOW, 0, 0, {}, {} }, // Random Monster
             { 0, 0, 0, 0, 0, Speed::VERYSLOW, 0, 0, {}, {} }, // Random Monster 1
@@ -356,7 +364,7 @@ namespace
                 { gettext_noop( "Archmage" ), gettext_noop( "Archmagi" ), 2, Race::WZRD, 5, { 700, 0, 0, 0, 0, 0, 0 } },
                 { gettext_noop( "Giant" ), gettext_noop( "Giants" ), 1, Race::WZRD, 6, { 2000, 0, 0, 0, 0, 0, 1 } },
                 { gettext_noop( "Titan" ), gettext_noop( "Titans" ), 1, Race::WZRD, 6, { 5000, 0, 0, 0, 0, 0, 2 } },
-                { gettext_noop( "Skeleton" ), gettext_noop( "Skeletons" ), 8, Race::NECR, 1, { 75, 0, 0, 0, 0, 0, 0 } },
+                { gettext_noop( "Skeleton" ), gettext_noop( "Skeletons" ), 8, Race::NONE, 1, { 75, 0, 0, 0, 0, 0, 0 } },
                 { gettext_noop( "Zombie" ), gettext_noop( "Zombies" ), 6, Race::NECR, 2, { 150, 0, 0, 0, 0, 0, 0 } },
                 { gettext_noop( "Mutant Zombie" ), gettext_noop( "Mutant Zombies" ), 6, Race::NECR, 2, { 200, 0, 0, 0, 0, 0, 0 } },
                 { gettext_noop( "Mummy" ), gettext_noop( "Mummies" ), 4, Race::NECR, 3, { 250, 0, 0, 0, 0, 0, 0 } },
@@ -388,7 +396,14 @@ namespace
         }
 
         // Add monster abilities and weaknesses.
+        //monsterData[Monster::PEASANT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SOUL_EATER );
+        monsterData[Monster::PEASANT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::HP_DRAIN );
         monsterData[Monster::RANGER].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_SHOOTING );
+        
+        monsterData[Monster::PIKEMAN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 15, 0 );
+        monsterData[Monster::SWORDSMAN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 15, 0 );
+        monsterData[Monster::VETERAN_PIKEMAN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 20, 0 );
+        monsterData[Monster::MASTER_SWORDSMAN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 20, 0 );
 
         monsterData[Monster::CAVALRY].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
 
@@ -407,12 +422,14 @@ namespace
         monsterData[Monster::TROLL].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::HP_REGENERATION );
 
         monsterData[Monster::WAR_TROLL].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::HP_REGENERATION );
+        monsterData[Monster::WAR_TROLL].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::EARTH_CREATURE );
 
         monsterData[Monster::CYCLOPS].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::TWO_CELL_MELEE_ATTACK );
         monsterData[Monster::CYCLOPS].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::PARALYZE );
 
         monsterData[Monster::SPRITE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::NO_ENEMY_RETALIATION );
         monsterData[Monster::SPRITE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
+        monsterData[Monster::SPRITE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::AIR_CREATURE );
 
         monsterData[Monster::DWARF].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 25, 0 );
 
@@ -421,6 +438,7 @@ namespace
         monsterData[Monster::ELF].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_SHOOTING );
 
         monsterData[Monster::GRAND_ELF].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_SHOOTING );
+        monsterData[Monster::GREATER_DRUID].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::AREA_SHOT );
 
         monsterData[Monster::UNICORN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
         monsterData[Monster::UNICORN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::BLIND );
@@ -429,14 +447,19 @@ namespace
         monsterData[Monster::PHOENIX].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::TWO_CELL_MELEE_ATTACK );
         monsterData[Monster::PHOENIX].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
         monsterData[Monster::PHOENIX].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ELEMENTAL_SPELL_IMMUNITY );
+        monsterData[Monster::PHOENIX].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FIRE_CREATURE );
+        monsterData[Monster::PHOENIX].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_WATER_CREATURES );
 
         monsterData[Monster::CENTAUR].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
 
         monsterData[Monster::GARGOYLE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
+        monsterData[Monster::GARGOYLE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::PETRIFY );
+        monsterData[Monster::GARGOYLE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::AIR_CREATURE );
 
         monsterData[Monster::GRIFFIN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
         monsterData[Monster::GRIFFIN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
         monsterData[Monster::GRIFFIN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::UNLIMITED_RETALIATION );
+        monsterData[Monster::MINOTAUR_KING].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 33, Spell::SLOW );
 
         monsterData[Monster::HYDRA].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
         monsterData[Monster::HYDRA].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ALL_ADJACENT_CELL_MELEE_ATTACK );
@@ -447,39 +470,55 @@ namespace
         monsterData[Monster::GREEN_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
         monsterData[Monster::GREEN_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 100, 0 );
         monsterData[Monster::GREEN_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::TWO_CELL_MELEE_ATTACK );
+        monsterData[Monster::GREEN_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FIRE_CREATURE );
+        monsterData[Monster::GREEN_DRAGON].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_WATER_CREATURES );
 
         monsterData[Monster::RED_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DRAGON );
         monsterData[Monster::RED_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
         monsterData[Monster::RED_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
         monsterData[Monster::RED_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 100, 0 );
         monsterData[Monster::RED_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::TWO_CELL_MELEE_ATTACK );
+        monsterData[Monster::RED_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FIRE_CREATURE );
+        monsterData[Monster::RED_DRAGON].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_WATER_CREATURES );
 
         monsterData[Monster::BLACK_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DRAGON );
         monsterData[Monster::BLACK_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
         monsterData[Monster::BLACK_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
         monsterData[Monster::BLACK_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 100, 0 );
         monsterData[Monster::BLACK_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::TWO_CELL_MELEE_ATTACK );
+        monsterData[Monster::BLACK_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FIRE_CREATURE );
+        monsterData[Monster::BLACK_DRAGON].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_WATER_CREATURES );
+        monsterData[Monster::HALFLING].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::IMMUNE_TO_CERTAIN_SPELL, 100, Spell::CURSE );
+        monsterData[Monster::HALFLING].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_MELEE_ATTACK );
 
         monsterData[Monster::BOAR].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
+        monsterData[Monster::BOAR].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 10, Spell::BERSERKER );
 
         monsterData[Monster::IRON_GOLEM].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ELEMENTAL_SPELL_DAMAGE_REDUCTION, 50, 0 );
         monsterData[Monster::IRON_GOLEM].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::CERTAIN_SPELL_DAMAGE_REDUCTION, 50, Spell::ARMAGEDDON );
+        monsterData[Monster::IRON_GOLEM].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_FIRE_CREATURES );
 
         monsterData[Monster::STEEL_GOLEM].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ELEMENTAL_SPELL_DAMAGE_REDUCTION, 50, 0 );
         monsterData[Monster::STEEL_GOLEM].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::CERTAIN_SPELL_DAMAGE_REDUCTION, 50, Spell::ARMAGEDDON );
+        monsterData[Monster::STEEL_GOLEM].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_FIRE_CREATURES );
 
         monsterData[Monster::ROC].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
         monsterData[Monster::ROC].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
 
         monsterData[Monster::MAGE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::NO_MELEE_PENALTY );
+        monsterData[Monster::MAGE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 10, Spell::BERSERKER );
 
         monsterData[Monster::ARCHMAGE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::NO_MELEE_PENALTY );
-        monsterData[Monster::ARCHMAGE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::DISPEL );
+       // monsterData[Monster::ARCHMAGE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::DISPEL );
+        monsterData[Monster::ARCHMAGE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MAGIC_RESISTANCE, 10, 0 );
+        monsterData[Monster::ARCHMAGE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::BERSERKER );        
 
         monsterData[Monster::GIANT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MIND_SPELL_IMMUNITY );
+        monsterData[Monster::GIANT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_EARTH_CREATURES );
 
         monsterData[Monster::TITAN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::NO_MELEE_PENALTY );
         monsterData[Monster::TITAN].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MIND_SPELL_IMMUNITY );
+        monsterData[Monster::TITAN].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_EARTH_CREATURES );
 
         monsterData[Monster::SKELETON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::UNDEAD );
 
@@ -489,9 +528,11 @@ namespace
 
         monsterData[Monster::MUMMY].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::UNDEAD );
         monsterData[Monster::MUMMY].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::CURSE );
+        monsterData[Monster::MUMMY].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_FIRE_SPELLS );
 
         monsterData[Monster::ROYAL_MUMMY].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::UNDEAD );
         monsterData[Monster::ROYAL_MUMMY].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 30, Spell::CURSE );
+        monsterData[Monster::ROYAL_MUMMY].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_FIRE_SPELLS );
 
         monsterData[Monster::VAMPIRE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::UNDEAD );
         monsterData[Monster::VAMPIRE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
@@ -513,8 +554,11 @@ namespace
         monsterData[Monster::BONE_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
         monsterData[Monster::BONE_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
         monsterData[Monster::BONE_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::MORAL_DECREMENT, 100, 1 );
+        monsterData[Monster::BONE_DRAGON].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::COLDRAY );
 
         monsterData[Monster::ROGUE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::NO_ENEMY_RETALIATION );
+        monsterData[Monster::ROGUE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 25, Spell::DISRUPTINGRAY );
+        monsterData[Monster::ROGUE].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
 
         monsterData[Monster::GHOST].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SOUL_EATER );
         monsterData[Monster::GHOST].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
@@ -527,6 +571,7 @@ namespace
         monsterData[Monster::MEDUSA].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::PETRIFY );
 
         monsterData[Monster::NOMAD].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::DOUBLE_HEX_SIZE );
+        monsterData[Monster::NOMAD].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::IMMUNE_TO_CERTAIN_SPELL, 100, Spell::SLOW );
 
         monsterData[Monster::AIR_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ELEMENTAL );
         monsterData[Monster::AIR_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::AIR_CREATURE );
@@ -538,6 +583,7 @@ namespace
         monsterData[Monster::AIR_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::EXTRA_DAMAGE_FROM_CERTAIN_SPELL, 100,
                                                                                Spell::LIGHTNINGBOLT );
         monsterData[Monster::AIR_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_EARTH_CREATURES );
+        monsterData[Monster::AIR_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FLYING );
 
         monsterData[Monster::EARTH_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ELEMENTAL );
         monsterData[Monster::EARTH_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::EARTH_CREATURE );
@@ -547,18 +593,21 @@ namespace
         monsterData[Monster::EARTH_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::EXTRA_DAMAGE_FROM_CERTAIN_SPELL, 100,
                                                                                  Spell::METEORSHOWER );
         monsterData[Monster::EARTH_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_AIR_CREATURES );
+        monsterData[Monster::EARTH_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ALL_ADJACENT_CELL_MELEE_ATTACK );
 
         monsterData[Monster::FIRE_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ELEMENTAL );
         monsterData[Monster::FIRE_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FIRE_CREATURE );
         monsterData[Monster::FIRE_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::FIRE_SPELL_IMMUNITY );
         monsterData[Monster::FIRE_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_COLD_SPELLS );
         monsterData[Monster::FIRE_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_WATER_CREATURES );
+        monsterData[Monster::FIRE_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::AREA_SHOT ); monsterData[Monster::FIRE_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::NO_MELEE_PENALTY );
 
         monsterData[Monster::WATER_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::ELEMENTAL );
         monsterData[Monster::WATER_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::WATER_CREATURE );
         monsterData[Monster::WATER_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::COLD_SPELL_IMMUNITY );
         monsterData[Monster::WATER_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_FIRE_SPELLS );
         monsterData[Monster::WATER_ELEMENT].battleStats.weaknesses.emplace_back( fheroes2::MonsterWeaknessType::DOUBLE_DAMAGE_FROM_FIRE_CREATURES );
+        monsterData[Monster::WATER_ELEMENT].battleStats.abilities.emplace_back( fheroes2::MonsterAbilityType::SPELL_CASTER, 20, Spell::COLDRAY );
 
         // Calculate base value of monster strength.
         for ( fheroes2::MonsterData & data : monsterData ) {

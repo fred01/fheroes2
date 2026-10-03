@@ -1108,6 +1108,8 @@ double Battle::Unit::evaluateThreatForUnit( const Unit & defender ) const
             case Spell::BLIND:
             case Spell::PARALYZE:
             case Spell::PETRIFY:
+            case Spell::BERSERKER:
+            case Spell::SLOW:
                 // Creature's built-in magic resistance (not 100% immunity but resistance, as, for example, with Dwarves) never works against the built-in magic of
                 // another creature (for example, Unicorn's Blind ability). Only the probability of triggering the built-in magic matters.
                 if ( defender.AllowApplySpell( static_cast<int32_t>( abilityIter->value ), nullptr ) ) {
@@ -1117,11 +1119,21 @@ double Battle::Unit::evaluateThreatForUnit( const Unit & defender ) const
             case Spell::DISPEL:
                 // TODO: add the logic to evaluate this spell value.
                 break;
+            case Spell::DISRUPTINGRAY:
             case Spell::CURSE:
                 // Creature's built-in magic resistance (not 100% immunity but resistance, as, for example, with Dwarves) never works against the built-in magic of
                 // another creature (for example, Unicorn's Blind ability). Only the probability of triggering the built-in magic matters.
                 if ( defender.AllowApplySpell( static_cast<int32_t>( abilityIter->value ), nullptr ) ) {
                     attackerThreat += static_cast<double>( getDefenderDamage() ) * abilityIter->percentage / 100.0 / 10.0;
+                }
+                break;
+            case Spell::LIGHTNINGBOLT:
+            case Spell::COLDRAY:
+                // The unit's built-in spell efficiency does not depend on its commanding hero's skills.
+                if ( defender.AllowApplySpell( static_cast<int32_t>( abilityIter->value ), nullptr ) ) {
+                    attackerThreat += static_cast<double>( Spell( static_cast<int32_t>( abilityIter->value ) ).Damage()
+                                                           * fheroes2::spellPowerForBuiltinMonsterSpells )
+                                      * abilityIter->percentage / 100.0;
                 }
                 break;
             default:

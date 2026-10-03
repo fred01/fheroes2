@@ -53,6 +53,7 @@ uint32_t Monster::GetMissileICN( uint32_t monsterID )
     case Monster::ELF:
     case Monster::GRAND_ELF:
         return ICN::ELF__MSL;
+    case Monster::FIRE_ELEMENT:
     case Monster::DRUID:
     case Monster::GREATER_DRUID:
         return ICN::DRUIDMSL;
@@ -274,6 +275,10 @@ Monster Monster::GetDowngrade() const
         return Monster( MAGE );
     case TITAN:
         return Monster( GIANT );
+    case HYDRA:
+        return Monster( MEDUSA );
+    case CAVALRY:
+        return Monster( NOMAD );
 
     default:
         break;
@@ -327,6 +332,10 @@ Monster Monster::GetUpgrade() const
         return Monster( ARCHMAGE );
     case GIANT:
         return Monster( TITAN );
+    case MEDUSA:
+        return Monster( HYDRA );
+    case NOMAD:
+        return Monster( CAVALRY );    
 
     default:
         break;
@@ -747,13 +756,14 @@ uint32_t Monster::GetDwelling() const
     case MAGE:
     case LICH:
     case UNICORN:
-    case HYDRA:
+    //case HYDRA:
         return DWELLING_MONSTER5;
 
     case CHAMPION:
     case WAR_TROLL:
     case ARCHMAGE:
     case POWER_LICH:
+    case HYDRA:
         return DWELLING_UPGRADE5;
 
     case PALADIN:

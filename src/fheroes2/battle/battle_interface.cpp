@@ -4830,7 +4830,8 @@ void Battle::Interface::redrawActionSpellCastStatus( const Spell & spell, int32_
     }
 }
 
-void Battle::Interface::redrawActionSpellCastPart1( const Spell & spell, int32_t dst, const HeroBase * caster, const TargetsInfo & targets )
+void Battle::Interface::redrawActionSpellCastPart1( const Spell & spell, int32_t dst, const HeroBase * caster, const TargetsInfo & targets,
+                                                    const Unit * casterUnit )
 {
     // Reset the idle animation delay timer to prevent the target unit from starting the idle animation.
     for ( const TargetInfo & spellTarget : targets ) {
@@ -4987,10 +4988,10 @@ void Battle::Interface::redrawActionSpellCastPart1( const Spell & spell, int32_t
                 _redrawActionChainLightningSpell( targets );
                 break;
             case Spell::COLDRAY:
-                _redrawActionColdRaySpell( *target );
+                _redrawActionColdRaySpell( *target, casterUnit );
                 break;
             case Spell::DISRUPTINGRAY:
-                _redrawActionDisruptingRaySpell( *target );
+                _redrawActionDisruptingRaySpell( *target, casterUnit );
                 break;
             case Spell::LIGHTNINGBOLT:
                 _redrawActionLightningBoltSpell( *target );
@@ -5169,8 +5170,26 @@ void Battle::Interface::RedrawActionMonsterSpellCastStatus( const Spell & spell,
     case Spell::PARALYZE:
         msg = _n( "The %{target} is paralyzed by the %{attacker}!", "The %{target} are paralyzed by the %{attacker}!", target.defender->GetCount() );
         break;
+        case Spell::BERSERKER:
+        msg = _n( "The %{attacker} inflicts berserker on the %{target}!", "The %{attacker} inflict berserker on the %{target}!", attackerCount );
+        break;
     case Spell::DISPEL:
         msg = _n( "The %{attacker} dispels all good spells on your %{target}!", "The %{attacker} dispel all good spells on your %{target}!", attackerCount );
+        break;
+    case Spell::SLOW:
+        msg = _n( "The %{attacker} slows down the %{target}!", "The %{attacker} slow down the %{target}!", attackerCount );
+        break;
+    case Spell::COLDRAY:
+        msg = _n( "The %{attacker}'s breath freezes the %{target}!", "The %{attacker}' breath freezes the %{target}!", attackerCount );
+        break;
+    case Spell::LIGHTNINGBOLT:
+        msg = _n( "The %{attacker}'s lightning strikes the %{target}!", "The %{attacker}' lightning strikes the %{target}!", attackerCount );
+        break;
+        case Spell::ARROW:
+        msg = _n( "The %{attacker} shoots an extra arrow!", "The %{attacker}' shoot an extra arrow!", attackerCount );
+        break;
+    case Spell::DISRUPTINGRAY:
+        msg = _n( "The %{attacker} tears through the %{target} defenses!", "The %{attacker} tear through the %{target} defenses!", attackerCount );
         break;
     default:
         // Did you add a new monster spell casting ability? Add the logic above!
@@ -6174,20 +6193,37 @@ void Battle::Interface::_redrawActionResurrectSpell( Unit & target, const Spell 
     RedrawTroopWithFrameAnimation( target, ICN::YINYANG, M82::UNKNOWN, target.GetHitPoints() == 0 ? RESURRECT : NONE );
 }
 
-void Battle::Interface::_redrawActionColdRaySpell( Unit & target )
+void Battle::Interface::_redrawActionColdRaySpell( Unit & target, const Unit * casterUnit )
 {
-    _redrawRaySpell( target, ICN::COLDRAY, M82::COLDRAY, 18 );
+    _redrawRaySpell( target, ICN::COLDRAY, M82::COLDRAY, 18, casterUnit );
     RedrawTroopWithFrameAnimation( target, ICN::ICECLOUD, M82::UNKNOWN, NONE );
 }
 
-void Battle::Interface::_redrawRaySpell( const Unit & target, const int spellICN, const int spellSound, const int32_t size )
+void Battle::Interface::_redrawRaySpell( const Unit & target, const int spellICN, const int spellSound, const int32_t size, const Unit * casterUnit )
 {
     Cursor & cursor = Cursor::Get();
     LocalEvent & le = LocalEvent::Get();
 
-    // Casting hero position
-    const fheroes2::Point startingPos
-        = arena.GetCurrentCommander() == _attackingOpponent->GetHero() ? _attackingOpponent->GetCastPosition() : _defendingOpponent->GetCastPosition();
+    // A built-in monster spell is cast by the unit itself and not by a hero. Also note that the army of the casting unit may have no commander at all (e.g. a
+    // neutral army), in which case there is no opponent sprite to take the casting position from.
+    const auto getStartingPos = [this, casterUnit]() {
+        if ( casterUnit != nullptr ) {
+            return casterUnit->GetCenterPoint();
+        }
+
+        if ( _attackingOpponent && arena.GetCurrentCommander() == _attackingOpponent->GetHero() ) {
+            return _attackingOpponent->GetCastPosition();
+        }
+
+        if ( _defendingOpponent ) {
+            return _defendingOpponent->GetCastPosition();
+        }
+
+        assert( 0 );
+        return fheroes2::Point{};
+    };
+
+    const fheroes2::Point startingPos = getStartingPos();
     const fheroes2::Point targetPos = target.GetCenterPoint();
 
     const std::vector<fheroes2::Point> path = getLinePoints( startingPos, targetPos, size );
@@ -6213,11 +6249,11 @@ void Battle::Interface::_redrawRaySpell( const Unit & target, const int spellICN
     }
 }
 
-void Battle::Interface::_redrawActionDisruptingRaySpell( Unit & target )
+void Battle::Interface::_redrawActionDisruptingRaySpell( Unit & target, const Unit * casterUnit )
 {
     LocalEvent & le = LocalEvent::Get();
 
-    _redrawRaySpell( target, ICN::DISRRAY, M82::DISRUPTR, 24 );
+    _redrawRaySpell( target, ICN::DISRRAY, M82::DISRUPTR, 24, casterUnit );
 
     // Hide the counter.
     target.SwitchAnimation( Monster_Info::STAND_STILL );

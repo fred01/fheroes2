@@ -55,8 +55,8 @@ namespace
     const std::array<SpellStats, Spell::SPELL_COUNT> spells = { {
         //  name | spell points | movement points | min movement points | image id | extra value | description
         { "Unknown", 0, 0, 0, 0, 0, "Unknown spell." },
-        { gettext_noop( "Fireball" ), 9, 0, 0, 8, 10, gettext_noop( "Causes a giant fireball to strike the selected area, damaging all nearby creatures." ) },
-        { gettext_noop( "Fireblast" ), 15, 0, 0, 9, 10,
+        { gettext_noop( "Fireball" ), 9, 0, 0, 8, 15, gettext_noop( "Causes a giant fireball to strike the selected area, damaging all nearby creatures." ) },
+        { gettext_noop( "Fireblast" ), 15, 0, 0, 9, 20,
           gettext_noop( "An improved version of fireball, fireblast affects two hexes around the center point of the spell, rather than one." ) },
         { gettext_noop( "Lightning Bolt" ), 7, 0, 0, 4, 25, gettext_noop( "Causes a bolt of electrical energy to strike the selected creature." ) },
         { gettext_noop( "Chain Lightning" ), 15, 0, 0, 5, 40,
@@ -93,14 +93,14 @@ namespace
         { gettext_noop( "Elemental Storm" ), 15, 0, 0, 11, 25, gettext_noop( "Magical elements pour down on the battlefield, damaging all creatures." ) },
         { gettext_noop( "Meteor Shower" ), 15, 0, 0, 24, 25, gettext_noop( "A rain of rocks strikes an area of the battlefield, damaging all nearby creatures." ) },
         { gettext_noop( "Paralyze" ), 9, 0, 0, 20, 0, gettext_noop( "The targeted creatures are paralyzed, unable to move or retaliate." ) },
-        { gettext_noop( "Hypnotize" ), 15, 0, 0, 37, 25,
+        { gettext_noop( "Hypnotize" ), 15, 0, 0, 37, 65,
           gettext_noop( "Brings a single enemy unit under your control if its hits are less than %{count} times the caster's spell power." ) },
         { gettext_noop( "Cold Ray" ), 6, 0, 0, 36, 20, gettext_noop( "Drains body heat from a single enemy unit." ) },
-        { gettext_noop( "Cold Ring" ), 9, 0, 0, 35, 10,
+        { gettext_noop( "Cold Ring" ), 6, 0, 0, 35, 15,
           gettext_noop( "Drains body heat from all units surrounding the center point, but not including the center point." ) },
         { gettext_noop( "Disrupting Ray" ), 7, 0, 0, 34, 3, gettext_noop( "Reduces the defense rating of an enemy unit by three." ) },
-        { gettext_noop( "Death Ripple" ), 6, 0, 0, 29, 5, gettext_noop( "Damages all living (non-undead) units in the battle." ) },
-        { gettext_noop( "Death Wave" ), 10, 0, 0, 28, 10,
+        { gettext_noop( "Death Ripple" ), 6, 0, 0, 29, 10, gettext_noop( "Damages all living (non-undead) units in the battle." ) },
+        { gettext_noop( "Death Wave" ), 10, 0, 0, 28, 20,
           gettext_noop( "Damages all living (non-undead) units in the battle. This spell is an improved version of Death Ripple." ) },
         { gettext_noop( "Dragon Slayer" ), 6, 0, 0, 32, 5, gettext_noop( "Greatly increases a unit's attack skill vs. Dragons." ) },
         { gettext_noop( "Blood Lust" ), 3, 0, 0, 27, 3, gettext_noop( "Increases a unit's attack skill." ) },
@@ -134,10 +134,10 @@ namespace
         { gettext_noop( "Visions" ), 6, 0, 0, 50, 3, gettext_noop( "Visions predicts the likely outcome of an encounter with a neutral army camp." ) },
         { gettext_noop( "Haunt" ), 8, 0, 0, 51, 4,
           gettext_noop( "Haunts a mine you control with Ghosts. This mine stops producing resources. (If I can't keep it, nobody will!)" ) },
-        { gettext_noop( "Set Earth Guardian" ), 15, 0, 0, 52, 4, gettext_noop( "Sets Earth Elementals to guard a mine against enemy armies." ) },
-        { gettext_noop( "Set Air Guardian" ), 15, 0, 0, 53, 4, gettext_noop( "Sets Air Elementals to guard a mine against enemy armies." ) },
-        { gettext_noop( "Set Fire Guardian" ), 15, 0, 0, 54, 4, gettext_noop( "Sets Fire Elementals to guard a mine against enemy armies." ) },
-        { gettext_noop( "Set Water Guardian" ), 15, 0, 0, 55, 4, gettext_noop( "Sets Water Elementals to guard a mine against enemy armies." ) },
+        { gettext_noop( "Set Earth Guardian" ), 15, 0, 0, 52, 10, gettext_noop( "Sets Earth Elementals to guard a mine against enemy armies." ) },
+        { gettext_noop( "Set Air Guardian" ), 15, 0, 0, 53, 10, gettext_noop( "Sets Air Elementals to guard a mine against enemy armies." ) },
+        { gettext_noop( "Set Fire Guardian" ), 15, 0, 0, 54, 10, gettext_noop( "Sets Fire Elementals to guard a mine against enemy armies." ) },
+        { gettext_noop( "Set Water Guardian" ), 15, 0, 0, 55, 10, gettext_noop( "Sets Water Elementals to guard a mine against enemy armies." ) },
         { gettext_noop( "Random Spell" ), 0, 0, 0, 67, 0, gettext_noop( "Randomly selected spell of any level." ) },
         { gettext_noop( "Random 1st Level Spell" ), 0, 0, 0, 68, 0, gettext_noop( "Randomly selected 1st level spell." ) },
         { gettext_noop( "Random 2nd Level Spell" ), 0, 0, 0, 69, 0, gettext_noop( "Randomly selected 2nd level spell." ) },
@@ -309,6 +309,7 @@ int Spell::Level() const
     case MASSDISPEL:
     case MASSHASTE:
     case PARALYZE:
+    case HYPNOTIZE:
     case TELEPORT:
 
     case IDENTIFYHERO:
@@ -336,7 +337,7 @@ int Spell::Level() const
         return 4;
 
     case ARMAGEDDON:
-    case HYPNOTIZE:
+
     case MIRRORIMAGE:
     case RESURRECTTRUE:
     case SUMMONEELEMENT:

@@ -41,7 +41,7 @@ namespace
                                                                             10,
                                                                             { 35, 45, 10, 10 },
                                                                             { 25, 25, 25, 25 },
-                                                                            { 2, 4, 3, 1, 3, 5, 3, 1, 1, 2, 0, 3, 2, 2 } },
+                                                                            { 2, 4, 3, 1, 3, 5, 3, 1, 1, 2, 1, 3, 2, 2 } },
                                                                           { "barbarian",
                                                                             { 1, 1, 1, 1 },
                                                                             { 3, 1, 1, 1 },
@@ -50,7 +50,7 @@ namespace
                                                                             10,
                                                                             { 55, 35, 5, 5 },
                                                                             { 30, 30, 20, 20 },
-                                                                            { 3, 3, 2, 1, 2, 3, 3, 2, 1, 3, 0, 4, 4, 1 } },
+                                                                            { 3, 3, 2, 1, 2, 3, 3, 2, 1, 3, 1, 4, 4, 1 } },
                                                                           { "sorceress",
                                                                             { 0, 0, 2, 2 },
                                                                             { 0, 0, 2, 3 },
@@ -59,12 +59,12 @@ namespace
                                                                             10,
                                                                             { 10, 10, 30, 50 },
                                                                             { 20, 20, 30, 30 },
-                                                                            { 3, 3, 2, 2, 2, 1, 2, 3, 3, 4, 0, 2, 1, 4 } },
+                                                                            { 3, 3, 2, 2, 2, 1, 2, 3, 3, 4, 1, 2, 1, 4 } },
                                                                           { "warlock",
                                                                             { 0, 0, 2, 2 },
                                                                             { 0, 0, 3, 2 },
                                                                             19,
-                                                                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1 },
+                                                                            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 1 },
                                                                             10,
                                                                             { 10, 10, 50, 30 },
                                                                             { 20, 20, 30, 30 },
@@ -77,7 +77,7 @@ namespace
                                                                             10,
                                                                             { 10, 10, 40, 40 },
                                                                             { 20, 20, 30, 30 },
-                                                                            { 1, 3, 2, 3, 2, 2, 2, 2, 4, 2, 0, 2, 2, 5 } },
+                                                                            { 1, 3, 2, 3, 2, 2, 2, 2, 4, 2, 1, 2, 2, 5 } },
                                                                           { "necromancer",
                                                                             { 0, 0, 2, 2 },
                                                                             { 1, 0, 2, 2 },
@@ -96,10 +96,10 @@ namespace
                                                                                                  { "navigation", { 33, 66, 100 } },
                                                                                                  { "leadership", { 1, 2, 3 } },
                                                                                                  { "wisdom", { 3, 4, 5 } },
-                                                                                                 { "mysticism", { 1, 2, 3 } },
+                                                                                                 { "mysticism", { 3, 5, 10 } },
                                                                                                  { "luck", { 1, 2, 3 } },
                                                                                                  { "ballistics", { 0, 0, 0 } },
-                                                                                                 { "eagleeye", { 20, 30, 40 } },
+                                                                                                 { "eagleeye", { 30, 50, 100 } },
                                                                                                  { "necromancy", { 10, 20, 30 } },
                                                                                                  { "estates", { 100, 250, 500 } } } };
 }
@@ -265,7 +265,7 @@ const Skill::SecondarySkillValuesPerLevel * GameStatic::GetSecondarySkillValuesP
 std::vector<int32_t> GameStatic::getSecondarySkillsForWitchsHut()
 {
     // Every skill except Leadership and Necromancy.
-    return { Skill::Secondary::PATHFINDING, Skill::Secondary::ARCHERY,    Skill::Secondary::LOGISTICS, Skill::Secondary::SCOUTING,
+    return { Skill::Secondary::PATHFINDING, Skill::Secondary::ARCHERY,    Skill::Secondary::LOGISTICS, Skill::Secondary::SCOUTING, Skill::Secondary::NECROMANCY,
              Skill::Secondary::DIPLOMACY,   Skill::Secondary::NAVIGATION, Skill::Secondary::WISDOM,    Skill::Secondary::MYSTICISM,
              Skill::Secondary::LUCK,        Skill::Secondary::BALLISTICS, Skill::Secondary::EAGLE_EYE, Skill::Secondary::ESTATES };
 }

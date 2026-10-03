@@ -714,22 +714,30 @@ namespace
         artifactData[Artifact::SEEING_EYE_PENDANT].bonuses.emplace_back( fheroes2::ArtifactBonusType::BLIND_SPELL_IMMUNITY );
 
         artifactData[Artifact::KINETIC_PENDANT].bonuses.emplace_back( fheroes2::ArtifactBonusType::PARALYZE_SPELL_IMMUNITY );
+        artifactData[Artifact::KINETIC_PENDANT].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::HASTE );
 
         artifactData[Artifact::PENDANT_DEATH].bonuses.emplace_back( fheroes2::ArtifactBonusType::HOLY_SPELL_IMMUNITY );
 
         artifactData[Artifact::WAND_NEGATION].bonuses.emplace_back( fheroes2::ArtifactBonusType::DISPEL_SPELL_IMMUNITY );
+        artifactData[Artifact::WAND_NEGATION].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::ANTIMAGIC );
+        artifactData[Artifact::WAND_NEGATION].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::CURSE );
 
         artifactData[Artifact::GOLDEN_BOW].bonuses.emplace_back( fheroes2::ArtifactBonusType::NO_SHOOTING_PENALTY, GameStatic::getCastleWallRangedPenalty() );
 
         artifactData[Artifact::TELESCOPE].bonuses.emplace_back( fheroes2::ArtifactBonusType::AREA_REVEAL_DISTANCE, 1 );
+        artifactData[Artifact::TELESCOPE].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::VIEWMINES );
+        artifactData[Artifact::TELESCOPE].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::VIEWARTIFACTS );
+        artifactData[Artifact::TELESCOPE].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::VIEWRESOURCES );
+        artifactData[Artifact::TELESCOPE].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::IDENTIFYHERO );
 
         artifactData[Artifact::STATESMAN_QUILL].bonuses.emplace_back( fheroes2::ArtifactBonusType::SURRENDER_COST_REDUCTION_PERCENT, 10 );
 
         artifactData[Artifact::WIZARD_HAT].bonuses.emplace_back( fheroes2::ArtifactBonusType::EVERY_COMBAT_SPELL_DURATION, 10 );
 
-        artifactData[Artifact::POWER_RING].bonuses.emplace_back( fheroes2::ArtifactBonusType::SPELL_POINTS_DAILY_GENERATION, 2 );
+        artifactData[Artifact::POWER_RING].bonuses.emplace_back( fheroes2::ArtifactBonusType::SPELL_POINTS_DAILY_GENERATION, 4 );
 
         artifactData[Artifact::AMMO_CART].bonuses.emplace_back( fheroes2::ArtifactBonusType::ENDLESS_AMMUNITION );
+        artifactData[Artifact::AMMO_CART].bonuses.emplace_back( fheroes2::ArtifactBonusType::LAND_MOBILITY, 300 );
 
         artifactData[Artifact::TAX_LIEN].curses.emplace_back( fheroes2::ArtifactCurseType::GOLD_PENALTY, 250 );
 
@@ -786,21 +794,25 @@ namespace
 
         artifactData[Artifact::HEART_FIRE].bonuses.emplace_back( fheroes2::ArtifactBonusType::FIRE_SPELL_DAMAGE_REDUCTION_PERCENT, 50 );
         artifactData[Artifact::HEART_FIRE].curses.emplace_back( fheroes2::ArtifactCurseType::COLD_SPELL_EXTRA_DAMAGE_PERCENT, 100 );
+        artifactData[Artifact::HEART_FIRE].bonuses.emplace_back( fheroes2::ArtifactBonusType::FIRE_SPELL_EXTRA_EFFECTIVENESS_PERCENT, 100 );
 
         artifactData[Artifact::HEART_ICE].bonuses.emplace_back( fheroes2::ArtifactBonusType::COLD_SPELL_DAMAGE_REDUCTION_PERCENT, 50 );
         artifactData[Artifact::HEART_ICE].curses.emplace_back( fheroes2::ArtifactCurseType::FIRE_SPELL_EXTRA_DAMAGE_PERCENT, 100 );
+        artifactData[Artifact::HEART_ICE].bonuses.emplace_back( fheroes2::ArtifactBonusType::COLD_SPELL_EXTRA_EFFECTIVENESS_PERCENT, 50 );
 
         artifactData[Artifact::HELMET_ANDURAN].bonuses.emplace_back( fheroes2::ArtifactBonusType::SPELL_POWER_SKILL, 5 );
 
         artifactData[Artifact::HOLY_HAMMER].bonuses.emplace_back( fheroes2::ArtifactBonusType::ATTACK_SKILL, 5 );
+        artifactData[Artifact::HOLY_HAMMER].bonuses.emplace_back( fheroes2::ArtifactBonusType::ADD_SPELL, Spell::HOLYSHOUT );
 
         artifactData[Artifact::LEGENDARY_SCEPTER].bonuses.emplace_back( fheroes2::ArtifactBonusType::ATTACK_SKILL, 2 );
         artifactData[Artifact::LEGENDARY_SCEPTER].bonuses.emplace_back( fheroes2::ArtifactBonusType::DEFENCE_SKILL, 2 );
         artifactData[Artifact::LEGENDARY_SCEPTER].bonuses.emplace_back( fheroes2::ArtifactBonusType::KNOWLEDGE_SKILL, 2 );
         artifactData[Artifact::LEGENDARY_SCEPTER].bonuses.emplace_back( fheroes2::ArtifactBonusType::SPELL_POWER_SKILL, 2 );
 
-        artifactData[Artifact::MASTHEAD].bonuses.emplace_back( fheroes2::ArtifactBonusType::SEA_BATTLE_MORALE_BOOST, 1 );
-        artifactData[Artifact::MASTHEAD].bonuses.emplace_back( fheroes2::ArtifactBonusType::SEA_BATTLE_LUCK_BOOST, 1 );
+        artifactData[Artifact::MASTHEAD].bonuses.emplace_back( fheroes2::ArtifactBonusType::SEA_BATTLE_MORALE_BOOST, 3 );
+        artifactData[Artifact::MASTHEAD].bonuses.emplace_back( fheroes2::ArtifactBonusType::SEA_BATTLE_LUCK_BOOST, 3 );
+        artifactData[Artifact::MASTHEAD].bonuses.emplace_back( fheroes2::ArtifactBonusType::SEA_MOBILITY, 100 );
 
         artifactData[Artifact::SPHERE_NEGATION].bonuses.emplace_back( fheroes2::ArtifactBonusType::DISABLE_ALL_SPELL_COMBAT_CASTING );
 

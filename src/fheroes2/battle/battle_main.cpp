@@ -207,7 +207,7 @@ namespace
                 break;
             case Skill::Level::EXPERT:
                 // 40%
-                if ( 5 > sp.Level() && eagleeye.GetValue() >= Rand::GetWithGen( 1, 100, randomGenerator ) )
+                if ( 5 >= sp.Level() && eagleeye.GetValue() >= Rand::GetWithGen( 1, 100, randomGenerator ) )
                     new_spells.push_back( sp );
                 break;
             default:
