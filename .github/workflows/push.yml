@@ -15,13 +15,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  android:
-    name: Android
-    uses: ./.github/workflows/android.yml
-    secrets:
-      ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
-      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
   make:
     name: Make
     uses: ./.github/workflows/make.yml
@@ -41,7 +34,6 @@ jobs:
   translation:
     name: Translation update
     needs:
-    - android
     - make
     - msvc
     uses: ./.github/workflows/translation_update.yml

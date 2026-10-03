@@ -83,11 +83,6 @@ jobs:
       run: ${{ needs.dispatcher.outputs.runSonarAnalyzer == 'YES' }}
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  android:
-    name: Android
-    needs:
-    - msvc
-    uses: ./.github/workflows/android.yml
   cmake:
     name: CMake
     needs:
