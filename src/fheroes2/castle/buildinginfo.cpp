@@ -701,6 +701,7 @@ bool DwellingsBar::ActionBarLeftMouseSingleClick( DwellingItem & dwl )
         if ( _dwelling.DialogBuyBuilding( true ) ) {
             AudioManager::PlaySound( M82::BUILDTWN );
             castle.BuyBuilding( dwType );
+            castle.showCaptainPromotionDialog();
         }
     }
 

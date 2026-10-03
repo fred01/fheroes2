@@ -27,6 +27,7 @@
 #include <array>
 #include <cassert>
 #include <iterator>
+#include <limits>
 #include <sstream>
 
 #include "agg_image.h"
@@ -97,6 +98,27 @@ namespace
             gettext_noop( "Lankershire" ),  gettext_noop( "Lombard" ),     gettext_noop( "Timberhill" ),   gettext_noop( "Fenton" ),     gettext_noop( "Troy" ),
             gettext_noop( "Forder Oaks" ),  gettext_noop( "Meramec" ),     gettext_noop( "Quick Silver" ), gettext_noop( "Westmoor" ),   gettext_noop( "Willow" ),
             gettext_noop( "Sheltemburg" ),  gettext_noop( "Corackston" ) };
+
+    // Every built dwelling promotes the captain: 1st and 2nd level dwellings give half a level, 3rd and 4th level dwellings give 1 level,
+    // a 5th level dwelling gives 2 levels and a 6th level dwelling gives 3 levels. Dwelling upgrades do not count.
+    int calculateCaptainLevel( const uint32_t constructedBuildings )
+    {
+        constexpr std::array<std::pair<uint32_t, int>, 6> halfLevelsPerDwelling = { { { DWELLING_MONSTER1, 1 },
+                                                                                       { DWELLING_MONSTER2, 1 },
+                                                                                       { DWELLING_MONSTER3, 2 },
+                                                                                       { DWELLING_MONSTER4, 2 },
+                                                                                       { DWELLING_MONSTER5, 4 },
+                                                                                       { DWELLING_MONSTER6, 6 } } };
+
+        int halfLevels = 0;
+        for ( const auto & [dwelling, value] : halfLevelsPerDwelling ) {
+            if ( constructedBuildings & dwelling ) {
+                halfLevels += value;
+            }
+        }
+
+        return 1 + halfLevels / 2;
+    }
 }
 
 void Castle::LoadFromMP2( const std::vector<uint8_t> & data )
@@ -500,6 +522,9 @@ void Castle::_postLoad()
     if ( _constructedBuildings & BUILD_CAPTAIN ) {
         _captain.LoadDefaults( HeroBase::CAPTAIN, _race );
         _captain.SetSpellPoints( _captain.GetMaxSpellPoints() );
+
+        // The captain gets all the levels for the dwellings built at the start of the game.
+        _promoteCaptain( 1, false );
     }
 
     _trainGuestHeroAndCaptainInMageGuild();
@@ -1265,6 +1290,8 @@ bool Castle::BuyBuilding( const uint32_t buildingType )
 
     GetKingdom().OddFundsResource( PaymentConditions::BuyBuilding( _race, buildingType ) );
 
+    const int previousCaptainLevel = calculateCaptainLevel( _constructedBuildings );
+
     _constructedBuildings |= buildingType;
 
     switch ( buildingType ) {
@@ -1317,10 +1344,58 @@ bool Castle::BuyBuilding( const uint32_t buildingType )
         break;
     }
 
+    if ( isBuild( BUILD_CAPTAIN ) ) {
+        // A newly hired captain gets all the levels for the dwellings that have already been built.
+        _promoteCaptain( buildingType == BUILD_CAPTAIN ? 1 : previousCaptainLevel, isControlHuman() );
+    }
+
     ResetModes( ALLOW_TO_BUILD_TODAY );
 
     DEBUG_LOG( DBG_GAME, DBG_INFO, _name << " build " << GetStringBuilding( buildingType, _race ) )
     return true;
+}
+
+int Castle::getCaptainLevel() const
+{
+    return calculateCaptainLevel( _constructedBuildings );
+}
+
+void Castle::_promoteCaptain( const int previousLevel, const bool showDialog )
+{
+    const int newLevel = getCaptainLevel();
+    if ( newLevel <= previousLevel ) {
+        return;
+    }
+
+    const uint32_t previousMaxSpellPoints = _captain.GetMaxSpellPoints();
+
+    CaptainPromotion promotion = _captainPromotion.value_or( CaptainPromotion{} );
+    promotion.level = newLevel;
+
+    for ( int level = previousLevel + 1; level <= newLevel; ++level ) {
+        // The chance to raise each primary skill depends on the captain's faction, just like for heroes.
+        const int skill = _captain.LevelUp( _race, level, Rand::Get( 0, std::numeric_limits<uint32_t>::max() ) );
+        assert( skill >= Skill::Primary::ATTACK && skill <= Skill::Primary::KNOWLEDGE );
+
+        ++promotion.skillGains[skill - Skill::Primary::ATTACK];
+    }
+
+    // Extra knowledge gives extra spell points right away.
+    _captain.SetSpellPoints( _captain.GetSpellPoints() + _captain.GetMaxSpellPoints() - previousMaxSpellPoints );
+
+    if ( const int wisdomLevel = Captain::getWisdomLevel( newLevel ); wisdomLevel > Captain::getWisdomLevel( previousLevel ) ) {
+        // Higher level spells from the Mage Guild can be learned now.
+        trainHeroInMageGuild( _captain );
+
+        // Basic Wisdom allows to learn 3rd level spells, Advanced - 4th level and Expert - 5th level spells.
+        promotion.maxSpellLevel = 2 + wisdomLevel;
+    }
+
+    DEBUG_LOG( DBG_GAME, DBG_INFO, _name << " captain is promoted to level " << newLevel )
+
+    if ( showDialog ) {
+        _captainPromotion = promotion;
+    }
 }
 
 void Castle::DrawImageCastle( const fheroes2::Point & pt ) const

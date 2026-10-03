@@ -26,6 +26,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "agg_image.h"
@@ -57,6 +58,7 @@
 #include "monster.h"
 #include "mus.h"
 #include "screen.h"
+#include "skill.h"
 #include "statusbar.h"
 #include "tools.h"
 #include "translations.h"
@@ -215,6 +217,74 @@ namespace
         armyBar.setInBetweenItemsOffset( { 6, 0 } );
         armyBar.Redraw( image );
     }
+
+    const char * getCaptainPromotionPhrase( const int level )
+    {
+        switch ( level % 4 ) {
+        case 0:
+            return _( "In recognition of tireless labors in the development of %{town}, the garrison captain has been promoted to level %{level}! "
+                      "May the enemies tremble at the sight of these walls." );
+        case 1:
+            return _( "The new dwellings of %{town} have filled the barracks with fresh recruits, and their commander has grown wiser while training them. "
+                      "The captain has reached level %{level}!" );
+        case 2:
+            return _( "Heralds proclaim from the town square: by decree of the lord of %{town}, the captain is raised to level %{level} "
+                      "for valor and diligence!" );
+        default:
+            return _( "As %{town} grows stronger, so does its defender. The captain has reached level %{level} "
+                      "and swears to hold these walls to the last breath!" );
+        }
+    }
+}
+
+void Castle::showCaptainPromotionDialog()
+{
+    if ( !_captainPromotion ) {
+        return;
+    }
+
+    const CaptainPromotion promotion = *_captainPromotion;
+    _captainPromotion.reset();
+
+    if ( !isControlHuman() ) {
+        return;
+    }
+
+    std::string message = getCaptainPromotionPhrase( promotion.level );
+    StringReplace( message, "%{town}", _name );
+    StringReplace( message, "%{level}", promotion.level );
+
+    if ( promotion.maxSpellLevel > 0 ) {
+        std::string wisdomMessage = _( "The captain has comprehended the secrets of magic and can now learn spells up to level %{level}." );
+        StringReplace( wisdomMessage, "%{level}", promotion.maxSpellLevel );
+
+        message += "\n\n";
+        message += wisdomMessage;
+    }
+
+    std::vector<std::unique_ptr<fheroes2::SmallPrimarySkillDialogElement>> skillElements;
+    std::vector<const fheroes2::DialogElement *> elements;
+
+    for ( size_t i = 0; i < promotion.skillGains.size(); ++i ) {
+        const int gain = promotion.skillGains[i];
+        if ( gain <= 0 ) {
+            continue;
+        }
+
+        const int skill = Skill::Primary::ATTACK + static_cast<int>( i );
+
+        message += ( elements.empty() ? "\n\n" : "\n" );
+        message += Skill::Primary::String( skill );
+        message += " +";
+        message += std::to_string( gain );
+
+        skillElements.emplace_back( std::make_unique<fheroes2::SmallPrimarySkillDialogElement>( skill, "+" + std::to_string( gain ) ) );
+        elements.emplace_back( skillElements.back().get() );
+    }
+
+    AudioManager::PlaySound( M82::EXPERNCE );
+
+    fheroes2::showStandardTextMessage( _( "Captain's Promotion" ), std::move( message ), Dialog::OK, elements );
 }
 
 Castle::CastleDialogReturnValue Castle::OpenDialog( const bool openConstructionWindow, const bool openMageGuildWindow, const bool fade,
@@ -832,6 +902,8 @@ Castle::CastleDialogReturnValue Castle::OpenDialog( const bool openConstructionW
             }
 
             fadeBuilding.stopFade();
+
+            showCaptainPromotionDialog();
         }
         else if ( fadeBuilding.getBuilding() == BUILD_CAPTAIN ) {
             // Fade-in the captain image while fading-in his quarters.
@@ -854,6 +926,9 @@ Castle::CastleDialogReturnValue Castle::OpenDialog( const bool openConstructionW
     }
 
     Game::SetUpdateSoundsOnFocusUpdate( true );
+
+    // In case the dialog was closed before the construction animation has finished.
+    showCaptainPromotionDialog();
 
     return result;
 }

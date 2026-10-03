@@ -35,6 +35,7 @@
 #include "math_base.h"
 #include "morale.h"
 #include "race.h"
+#include "skill.h"
 #include "spell_book.h"
 
 class Army;
@@ -87,6 +88,31 @@ Captain::Captain( Castle & castle )
     , home( castle )
 {
     SetCenter( home.GetCenter() );
+}
+
+int Captain::getWisdomLevel( const int captainLevel )
+{
+    // The captain is able to learn 3rd, 4th and 5th level spells starting from the 3rd, 6th and 9th levels respectively.
+    if ( captainLevel >= 9 ) {
+        return Skill::Level::EXPERT;
+    }
+    if ( captainLevel >= 6 ) {
+        return Skill::Level::ADVANCED;
+    }
+    if ( captainLevel >= 3 ) {
+        return Skill::Level::BASIC;
+    }
+
+    return Skill::Level::NONE;
+}
+
+int Captain::GetLevelSkill( const int skill ) const
+{
+    if ( skill == Skill::Secondary::WISDOM ) {
+        return getWisdomLevel( home.getCaptainLevel() );
+    }
+
+    return Skill::Level::NONE;
 }
 
 bool Captain::isValid() const

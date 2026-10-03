@@ -12920,3 +12920,21 @@ msgstr "Он сказал ей: Бе бе бе... а потом она сказ�
 
 msgid "An unknown force is being resurrected..."
 msgstr "Возрождается неведомая сила..."
+
+msgid "Captain's Promotion"
+msgstr "Повышение капитана"
+
+msgid "In recognition of tireless labors in the development of %{town}, the garrison captain has been promoted to level %{level}! May the enemies tremble at the sight of these walls."
+msgstr "За неустанные труды во благо развития города %{town} капитан гарнизона произведён в %{level}-й уровень! Да трепещут враги при виде этих стен."
+
+msgid "The new dwellings of %{town} have filled the barracks with fresh recruits, and their commander has grown wiser while training them. The captain has reached level %{level}!"
+msgstr "Новые жилища города %{town} наполнили казармы свежими рекрутами, а их командир набрался мудрости, обучая их. Капитан достиг %{level}-го уровня!"
+
+msgid "Heralds proclaim from the town square: by decree of the lord of %{town}, the captain is raised to level %{level} for valor and diligence!"
+msgstr "Глашатаи возвещают с городской площади: указом владыки города %{town} капитан за доблесть и усердие возведён в %{level}-й уровень!"
+
+msgid "As %{town} grows stronger, so does its defender. The captain has reached level %{level} and swears to hold these walls to the last breath!"
+msgstr "Чем сильнее становится %{town}, тем сильнее и его защитник. Капитан достиг %{level}-го уровня и клянётся удерживать эти стены до последнего вздоха!"
+
+msgid "The captain has comprehended the secrets of magic and can now learn spells up to level %{level}."
+msgstr "Капитан постиг тайны магии и теперь может изучать заклинания вплоть до %{level}-го уровня."

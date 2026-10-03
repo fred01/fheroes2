@@ -29,6 +29,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -174,6 +175,12 @@ public:
     {
         return _captain;
     }
+
+    // The captain's level depends on the dwellings built in the castle.
+    int getCaptainLevel() const;
+
+    // Shows the captain's promotion (if any) caused by the latest constructed buildings.
+    void showCaptainPromotionDialog();
 
     bool isCastle() const
     {
@@ -421,6 +428,10 @@ private:
 
     void _setDefaultBuildings();
 
+    // Raises the captain's primary skills for every level gained since 'previousLevel'.
+    // If 'showDialog' is set the promotion is going to be shown by showCaptainPromotionDialog().
+    void _promoteCaptain( const int previousLevel, const bool showDialog );
+
     // Recruit maximum monsters from the castle. Returns 'true' if the recruit was made.
     bool _recruitCastleMax( const Troops & currentCastleArmy );
 
@@ -438,6 +449,18 @@ private:
     MageGuild _mageGuild;
     std::array<uint32_t, maxNumOfDwellings> _dwelling{ 0 };
     Army _army{ &_captain };
+
+    struct CaptainPromotion
+    {
+        int level{ 0 };
+        // The number of points gained for each primary skill: Attack, Defense, Power and Knowledge.
+        std::array<int, 4> skillGains{ 0 };
+        // The maximum level of spells the captain is able to learn if it has been raised by the promotion, otherwise 0.
+        int maxSpellLevel{ 0 };
+    };
+
+    // This is not saved: the promotion is shown right after the construction of a building.
+    std::optional<CaptainPromotion> _captainPromotion;
 };
 
 namespace CastleDialog

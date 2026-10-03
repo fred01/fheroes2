@@ -61,10 +61,10 @@ public:
 
     const Castle * inCastle() const override;
 
-    int GetLevelSkill( int ) const override
-    {
-        return 0;
-    }
+    // The captain has no secondary skills except Wisdom which depends on the captain's level.
+    int GetLevelSkill( const int skill ) const override;
+
+    static int getWisdomLevel( const int captainLevel );
 
     uint32_t GetSecondarySkillValue( int /* skill */ ) const override
     {
